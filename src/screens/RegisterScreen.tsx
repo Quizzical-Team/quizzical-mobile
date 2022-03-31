@@ -3,7 +3,7 @@ import { View, Text, TextInput, Button, StyleSheet, Pressable } from 'react-nati
 import LoginScreenButton from '../components/LoginScreenButton';
 import { LinearGradient } from 'expo-linear-gradient';
 
-const LoginScreen = ({navigation}) => {
+const RegisterScreen = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [warningOpacity, setWarningOpacity] = useState(0);
@@ -28,7 +28,6 @@ const LoginScreen = ({navigation}) => {
 
   const signup = () => {
     console.log("SIGN UP");
-    navigation.navigate("REGISTER")
   }
 
   const forgotPass = () => {
@@ -45,13 +44,11 @@ const LoginScreen = ({navigation}) => {
 
   return (
     <LinearGradient colors={["#EE6565","#FFF2AC"]} style={styles.mainScreen}>
-      <Text style={styles.loginText}>LOGIN</Text>
+      <Text style={styles.loginText}>REGISTER</Text>
       <TextInput style={styles.inputs} placeholder="Email" keyboardType="email-address" autoCapitalize='none' onChangeText={emailHandler}></TextInput>
       <TextInput style={styles.inputs} secureTextEntry={true} placeholder="Password" onChangeText={passwordHandler}></TextInput>
       <Text style={[styles.warning, {opacity: warningOpacity}]}>Wrong email or password</Text>
-      <LoginScreenButton style={styles.loginButton} press={login}>LOGIN</LoginScreenButton>
       <LoginScreenButton style={styles.signUpButton} press={signup}>SIGN UP</LoginScreenButton>
-      <Pressable onPress={forgotPass}><Text>Forgot Password?</Text></Pressable>
     </LinearGradient>
   );
 };
@@ -98,4 +95,4 @@ const styles = StyleSheet.create({
   }
 })
 
-export default LoginScreen;
+export default RegisterScreen;
