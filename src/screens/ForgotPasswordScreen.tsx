@@ -19,7 +19,8 @@ const ForgotPasswordScreen = ({ navigation }) => {
     console.log('RESET PASSWORD')
     //FORGOT PASSWORD
 
-    //NAVIGATE TO MAIN MENU
+    //NAVIGATE TO LOGIN PAGE
+    navigation.navigate('LOGIN')
   }
 
   const emailHandler = (loginEmail) => {

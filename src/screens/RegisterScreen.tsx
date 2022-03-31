@@ -28,6 +28,7 @@ const RegisterScreen = ({ navigation }) => {
     console.log('SIGN UP')
     if (register()) {
       //GO TO MAIN MENU
+      navigation.navigate('MAINMENU')
     } else {
     }
   }
