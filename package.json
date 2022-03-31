@@ -12,6 +12,7 @@
   "dependencies": {
     "@react-navigation/native": "react-navigation/native",
     "expo": "~44.0.0",
+    "expo-linear-gradient": "~11.0.3",
     "expo-status-bar": "~1.2.0",
     "native-base": "^3.3.7",
     "react": "17.0.1",

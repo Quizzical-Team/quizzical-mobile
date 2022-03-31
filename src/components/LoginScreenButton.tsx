@@ -1,6 +1,6 @@
 import { View, Text, StyleSheet, Pressable } from "react-native"
 
-const PrimaryButton = ({ children, style, press }) => {
+const LoginScreenButton = ({ children, style, press }) => {
     return (
         <View style={style}>
             <Pressable style={styles.buttonInner} onPress={press} android_ripple={{color: "white"}}>
@@ -16,7 +16,6 @@ const PrimaryButton = ({ children, style, press }) => {
 const styles = StyleSheet.create(
     {
         buttonInner: {
-            backgroundColor: "black",
             height: "100%",
         },
         text: {
@@ -28,4 +27,4 @@ const styles = StyleSheet.create(
     }
 )
 
-export default PrimaryButton;
+export default LoginScreenButton;
