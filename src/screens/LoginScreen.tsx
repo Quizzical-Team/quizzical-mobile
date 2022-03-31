@@ -1,19 +1,31 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, Button, StyleSheet } from 'react-native'
+import { View, Text, TextInput, Button, StyleSheet, Pressable } from 'react-native'
 import PrimaryButton from '../components/PrimaryButton';
 
 const LoginScreen = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   
+  const login = () => {
+    console.log("LOGIN");
+  }
+
+  const signup = () => {
+    console.log("SIGN UP");
+  }
+
+  const forgotPass = () => {
+    console.log("pass");
+  }
+
   return (
     <View style={styles.mainScreen}>
       <Text style={styles.loginText}>LOG IN</Text>
-      <TextInput style={styles.inputs} placeholder="Email"></TextInput>
-      <TextInput style={styles.inputs} placeholder="Password"></TextInput>
-      <PrimaryButton style={styles.buttons}>LOG IN</PrimaryButton>
-      <PrimaryButton style={styles.buttons}>SIGN UP</PrimaryButton>
-      <Text>Forgot Password?</Text>
+      <TextInput style={styles.inputs} placeholder="Email" keyboardType="email-address" autoCapitalize='none'></TextInput>
+      <TextInput style={styles.inputs} secureTextEntry={true} placeholder="Password"></TextInput>
+      <PrimaryButton style={styles.buttons} press={login}>LOG IN</PrimaryButton>
+      <PrimaryButton style={styles.buttons} press={signup}>SIGN UP</PrimaryButton>
+      <Pressable onPress={forgotPass}><Text>Forgot Password?</Text></Pressable>
     </View>
   );
 };
@@ -33,7 +45,6 @@ const styles = StyleSheet.create({
   inputs:{
     width: 300,
     height: 60,
-    borderColor: "black",
     backgroundColor: "white",
     margin: 10,
     borderRadius: 40,
@@ -42,10 +53,11 @@ const styles = StyleSheet.create({
   buttons:{
     width: 300,
     height: 60,
-    borderColor: "black",
     backgroundColor: "black",
     margin: 10,
     borderRadius: 40,
+    overflow: "hidden",
+
   }
 })
 
