@@ -6,9 +6,24 @@ import { LinearGradient } from 'expo-linear-gradient';
 const LoginScreen = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  
+  const [warningOpacity, setWarningOpacity] = useState(0);
+
+  const authentication = () => {
+    if(email=="johndoe" && password=="abc"){
+      return true;
+    }
+    return false;
+  }
+
   const login = () => {
-    console.log("LOGIN");
+    if(authentication()){
+      console.log("LOGGED IN")
+
+      setWarningOpacity(0);
+    }
+    else{
+      setWarningOpacity(1);
+    }
   }
 
   const signup = () => {
@@ -19,12 +34,21 @@ const LoginScreen = () => {
     console.log("pass");
   }
 
+  const emailHandler = (loginEmail) => {
+    setEmail(loginEmail);
+  }
+
+  const passwordHandler = (loginPassword) => {
+    setPassword(loginPassword)
+  }
+
   return (
     <LinearGradient colors={["#EE6565","#FFF2AC"]} style={styles.mainScreen}>
-      <Text style={styles.loginText}>LOG IN</Text>
-      <TextInput style={styles.inputs} placeholder="Email" keyboardType="email-address" autoCapitalize='none'></TextInput>
-      <TextInput style={styles.inputs} secureTextEntry={true} placeholder="Password"></TextInput>
-      <LoginScreenButton style={styles.loginButton} press={login}>LOG IN</LoginScreenButton>
+      <Text style={styles.loginText}>LOGIN</Text>
+      <TextInput style={styles.inputs} placeholder="Email" keyboardType="email-address" autoCapitalize='none' onChangeText={emailHandler}></TextInput>
+      <TextInput style={styles.inputs} secureTextEntry={true} placeholder="Password" onChangeText={passwordHandler}></TextInput>
+      <Text style={[styles.warning, {opacity: warningOpacity}]}>Wrong email or password</Text>
+      <LoginScreenButton style={styles.loginButton} press={login}>LOGIN</LoginScreenButton>
       <LoginScreenButton style={styles.signUpButton} press={signup}>SIGN UP</LoginScreenButton>
       <Pressable onPress={forgotPass}><Text>Forgot Password?</Text></Pressable>
     </LinearGradient>
@@ -38,6 +62,10 @@ const styles = StyleSheet.create({
     width: "100%",
     justifyContent: "center",
     alignItems: "center",
+  },
+  warning:{
+    color: "darkred",
+    opacity: 0,
   },
   loginText:{
     textAlign: "center",
@@ -55,7 +83,7 @@ const styles = StyleSheet.create({
     width: 300,
     height: 60,
     backgroundColor: "black",
-    margin: 10,
+    margin: 5,
     borderRadius: 40,
     overflow: "hidden",
   },
@@ -63,7 +91,7 @@ const styles = StyleSheet.create({
     width: 300,
     height: 60,
     backgroundColor: "#EF5050",
-    margin: 10,
+    margin: 5,
     borderRadius: 40,
     overflow: "hidden",
   }
