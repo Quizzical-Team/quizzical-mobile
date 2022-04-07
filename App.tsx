@@ -7,6 +7,8 @@ import RegisterScreen from './src/screens/RegisterScreen'
 import ForgotPasswordScreen from './src/screens/ForgotPasswordScreen'
 import MainMenuScreen from './src/screens/MainMenuScreen'
 
+
+
 const Stack = createNativeStackNavigator()
 
 export default function App() {

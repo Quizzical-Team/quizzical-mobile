@@ -3,10 +3,14 @@ import { View, StyleSheet, Pressable, Text, Image } from 'react-native'
 import { AntDesign } from '@expo/vector-icons'
 import { loggedInUser } from '../data/authentication'
 
-const MainMenuHeader = () => {
+const MainMenuHeader = ({navigation}) => {
+
+  const drawerHandler = () => {
+      navigation.openDrawer();
+  }
   return (
     <View style={styles.header}>
-      <Pressable style={styles.menu}>
+      <Pressable style={styles.menu} onPress={drawerHandler}>
         <AntDesign name="menufold" size={36} color="white" />
       </Pressable>
       <View style={styles.userInfo}>
