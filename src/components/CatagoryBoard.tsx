@@ -22,7 +22,6 @@ const CatagoryBoard = () => {
 
 const styles = StyleSheet.create({
   board: {
-    borderWidth: 1,
     width: '90%',
     height: '50%'
   }
