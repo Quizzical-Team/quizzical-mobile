@@ -6,6 +6,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import RegisterScreen from './src/screens/RegisterScreen'
 import ForgotPasswordScreen from './src/screens/ForgotPasswordScreen'
 import MainMenuScreen from './src/screens/MainMenuScreen'
+import SpeedRunScreen from './src/screens/speedRun/SpeedRunScreen'
 
 
 
@@ -28,6 +29,7 @@ export default function App() {
             component={ForgotPasswordScreen}
           />
           <Stack.Screen name="MAINMENU" component={MainMenuScreen} />
+          <Stack.Screen name="SPEEDRUN" component={SpeedRunScreen} />
         </Stack.Navigator>
       </NavigationContainer>
     </>

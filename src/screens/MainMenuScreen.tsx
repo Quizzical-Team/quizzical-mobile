@@ -8,14 +8,14 @@ import 'react-native-gesture-handler'
 
 const Drawer = createDrawerNavigator()
 
-const HomeMenu = ({ navigation }) => {
+const HomeMenu = ({ navigation, mainNavigation }) => {
   return (
     <View style={styles.mainFrame}>
       <View style={styles.headerPanel}>
         <MainMenuHeader navigation={navigation} />
       </View>
       <View style={styles.catagoryPanel}>
-        <CatagoryBoard />
+        <CatagoryBoard navigation={mainNavigation}/>
       </View>
     </View>
   )
@@ -60,7 +60,7 @@ const MainMenuScreen = ({ navigation }) => {
         }}
         initialRouteName="Home"
       >
-        <Drawer.Screen name="Home" component={HomeMenu} />
+        <Drawer.Screen name="Home" component={() => <HomeMenu mainNavigation={navigation}/>}/>
         <Drawer.Screen name="Profile" component={Profile} />
         <Drawer.Screen name="Friends" component={Friends} />
         <Drawer.Screen name="Contribute" component={Contribute} />

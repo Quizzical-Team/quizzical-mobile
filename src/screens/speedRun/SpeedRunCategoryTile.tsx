@@ -2,10 +2,10 @@ import { background } from "native-base/lib/typescript/theme/styled-system";
 import React from "react";
 import { View, Pressable, Text, StyleSheet } from "react-native";
 
-const CatagoryTile = ({title, color, componentName, navigation}) => {
+const SpeedRunCatagoryTile = ({title, color, componentName}) => {
 
     const handleComponentPress = () => {
-        navigation.navigate(componentName);
+       // navigation.navigate(componentName);
     }
     
     console.log(title)
@@ -47,4 +47,4 @@ const styles = StyleSheet.create({
 
     }
 })
-export default CatagoryTile;
+export default SpeedRunCatagoryTile;
