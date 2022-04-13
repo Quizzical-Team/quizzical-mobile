@@ -3,9 +3,9 @@ import { View, StyleSheet, Text, FlatList } from "react-native";
 import { categories } from "../../data/Catagories";
 import SpeedRunCatagoryTile from "./SpeedRunCategoryTile";
 
-const SpeedRunCategoryBoard = () => {
+const SpeedRunCategoryBoard = ({navigation}) => {
     const renderCatagoryTile = (itemData) => {
-        return <SpeedRunCatagoryTile title={itemData.item.title} color={itemData.item.color} componentName={itemData.item.componentName}/>
+        return <SpeedRunCatagoryTile navigation={navigation} title={itemData.item.title} color={itemData.item.color} componentName={itemData.item.componentName}/>
       }
       return (
         <FlatList

@@ -2,10 +2,10 @@ import { background } from "native-base/lib/typescript/theme/styled-system";
 import React from "react";
 import { View, Pressable, Text, StyleSheet } from "react-native";
 
-const SpeedRunCatagoryTile = ({title, color, componentName}) => {
+const SpeedRunCatagoryTile = ({title, color, componentName, navigation}) => {
 
     const handleComponentPress = () => {
-       // navigation.navigate(componentName);
+       navigation.navigate("SPEEDRUN_DURATIONPICK");
     }
     
     console.log(title)
