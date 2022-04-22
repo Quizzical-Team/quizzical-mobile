@@ -1,33 +1,34 @@
 import { AntDesign } from '@expo/vector-icons'
 import { NavigationRouteContext } from '@react-navigation/native'
 import { LinearGradient } from 'expo-linear-gradient'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { View, Text, StyleSheet, Pressable } from 'react-native'
 import { questions } from '../../data/Questions'
 
 let answeredQuestions = []
 let currentQuestion;
+let gameStarted = false;
 
-const SpeedRunQuizPanel = ({navigation}) => {
-  let randomizeIndices = Array.from(Array(questions.length).keys())
+const getUnansweredQuestion = () => {
+    let randomizeIndices = Array.from(Array(questions.length).keys())
   randomizeIndices = randomizeIndices.filter((number) => {
     return !(answeredQuestions.indexOf(number) > -1)
   })
   randomizeIndices = randomizeIndices.sort(() => Math.random() - 0.5)
   answeredQuestions.push(randomizeIndices[0])
+  return questions[randomizeIndices[0]];
+}
+
+const SpeedRunQuizPanel = ({navigation}) => {
+  
+  const [currentQuestion, setQuestion] = useState({question:"",answers:[]})
   const [correctAnswers, setCorrectAnswers] = useState(0)
   const [incorrectAnswers, setInCorrectAnswers] = useState(0)
-
-  if(randomizeIndices.length == 0){
-      navigation.navigate("SPEEDRUN_STATS")
-      currentQuestion = {question:"", answers:[]}
-  }
-  else{
-     currentQuestion = questions[randomizeIndices[0]]
-  }
-
   
-  
+  if(!gameStarted){
+      gameStarted = true
+      setQuestion(getUnansweredQuestion());
+  }
 
   const handleAnswer = (trueness) => {
     if (trueness) {
@@ -39,6 +40,13 @@ const SpeedRunQuizPanel = ({navigation}) => {
         setInCorrectAnswers(incorrectAnswers + 1)
       )
     }
+    console.log(answeredQuestions)
+    if(questions.length == answeredQuestions.length){
+        navigation.navigate("SPEEDRUN_STATS")
+     }
+     else{
+         setQuestion(getUnansweredQuestion)
+     }
   }
 
   const AnswerButton = ({ answer, trueness }) => {

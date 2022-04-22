@@ -6,20 +6,17 @@ import SpeedRunDurationPick from "./SpeedRunDurationPick";
 const SpeedRunTimeBar = ({duration, navigation}) => {
     const [currentTime, setTime] = useState(duration)
 
-    useEffect(() => {
-        let interval = setInterval(() => {
-          setTime(lastTimerCount => {
-              lastTimerCount <= 1 && clearInterval(interval)
-              return lastTimerCount - 1
-          })
-        }, 1000) //each count lasts for a second
-        //cleanup the interval on complete
-        return () => clearInterval(interval)
-      }, []);
+      useEffect(()=>{
 
-      if(currentTime == 0){
-          navigation.navigate("SPEEDRUN_STATS");
-      }
+            if(currentTime == 0){
+                navigation.navigate("SPEEDRUN_STATS");
+            }
+            else{
+                setTimeout(()=>{setTime(currentTime=>currentTime-1)},1000)
+            }
+          
+      },[ currentTime])
+
     return(
         <View style={styles.bar}>
             <Text style={styles.countdown}>{currentTime}</Text>
