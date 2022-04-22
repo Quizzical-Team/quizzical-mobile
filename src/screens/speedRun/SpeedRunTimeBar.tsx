@@ -3,7 +3,7 @@ import { View, StyleSheet, Text, Animated } from "react-native";
 import { useSharedValue } from "react-native-reanimated";
 import SpeedRunDurationPick from "./SpeedRunDurationPick";
 
-const SpeedRunTimeBar = ({duration}) => {
+const SpeedRunTimeBar = ({duration, navigation}) => {
     const [currentTime, setTime] = useState(duration)
 
     useEffect(() => {
@@ -16,6 +16,10 @@ const SpeedRunTimeBar = ({duration}) => {
         //cleanup the interval on complete
         return () => clearInterval(interval)
       }, []);
+
+      if(currentTime == 0){
+          navigation.navigate("SPEEDRUN_STATS");
+      }
     return(
         <View style={styles.bar}>
             <Text style={styles.countdown}>{currentTime}</Text>

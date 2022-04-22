@@ -9,8 +9,8 @@ const SpeedRunGameScreen = ({navigation, route}) => {
     console.log(category)
     return(
         <View style={styles.frame}>
-            <SpeedRunTimeBar duration={duration} />
-            <SpeedRunQuizPanel />
+            <SpeedRunTimeBar duration={duration} navigation={navigation}/>
+            <SpeedRunQuizPanel navigation={navigation}/>
         </View>
     )
 }
