@@ -5,6 +5,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import { NavigationContainer } from '@react-navigation/native'
 import SpeedRunCategoryPickScreen from './SpeedRunCategoryPickScreen'
 import SpeedRunDurationPick from './SpeedRunDurationPick'
+import SpeedRunGameScreen from './SpeedRunGameScreen'
 
 const Stack = createNativeStackNavigator()
 
@@ -63,6 +64,10 @@ const SpeedRunScreen = ({ navigation }) => {
         <Stack.Screen
           name="SPEEDRUN_DURATIONPICK"
           component={SpeedRunDurationPick}
+        />
+        <Stack.Screen
+          name="SPEEDRUN_GAME"
+          component={SpeedRunGameScreen}
         />
       </Stack.Navigator>
     </NavigationContainer>

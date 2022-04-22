@@ -3,16 +3,18 @@ import { LinearGradient } from 'expo-linear-gradient'
 import React, { useState } from 'react'
 import { View, Text, StyleSheet, Pressable } from 'react-native'
 
-const SpeedRunDurationPick = ({navigation}) => {
+const SpeedRunDurationPick = ({navigation, route}) => {
+  const {category} = route.params;
   const [currentDuration, setDuration] = useState(60);
 
   const handleBackButton = () => {
     navigation.navigate("SPEEDRUN_CATEGORYPICK")
   }
 
-  const handleDurationButtons = (duration) => {
-      setDuration(duration);
-      //navigation.navigate("")
+  const handleDurationButtons = (time) => {
+      setDuration(time);
+      console.log(currentDuration)
+      navigation.navigate("SPEEDRUN_GAME", {duration: time, category: category})
   }
 
   const DurationButton = ({time}) => {
@@ -23,7 +25,7 @@ const SpeedRunDurationPick = ({navigation}) => {
           style={styles.durationButtonInner}
           onPress={ ()=>{handleDurationButtons(time)} }
         >
-          <Text style={styles.durationButtonText}>{time} Seconds</Text>
+          <Text style={styles.durationButtonText}>{time.toString()} Seconds</Text>
         </Pressable>
       </LinearGradient>
       )
@@ -40,9 +42,9 @@ const SpeedRunDurationPick = ({navigation}) => {
           {currentDuration} Seconds
       </Text>
       <View style={styles.catagoryPanel}>
-        <DurationButton time={"30"}/>
-        <DurationButton time={"45"}/>
-        <DurationButton time={"60"}/>
+        <DurationButton time={30}/>
+        <DurationButton time={45}/>
+        <DurationButton time={60}/>
       </View>
     </View>
   )
@@ -106,4 +108,4 @@ const styles = StyleSheet.create({
   }
 })
 
-export default SpeedRunDurationPick
+export default SpeedRunDurationPick;

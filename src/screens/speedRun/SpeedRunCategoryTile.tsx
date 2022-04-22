@@ -4,14 +4,14 @@ import { View, Pressable, Text, StyleSheet } from "react-native";
 
 const SpeedRunCatagoryTile = ({title, color, componentName, navigation}) => {
 
-    const handleComponentPress = () => {
-       navigation.navigate("SPEEDRUN_DURATIONPICK");
+    const handleComponentPress = (title) => {
+       navigation.navigate("SPEEDRUN_DURATIONPICK", {category: title});
     }
     
     console.log(title)
     return(
         <View style={[styles.gridItem, {backgroundColor: color}]}>
-            <Pressable android_ripple={{color: "#ccc"}} style={styles.button} onPress={handleComponentPress}>
+            <Pressable android_ripple={{color: "#ccc"}} style={styles.button} onPress={() => handleComponentPress(title)}>
                 <View style={styles.innerContainer}>
                     <Text style={styles.title}>{title}</Text>
                 </View>
