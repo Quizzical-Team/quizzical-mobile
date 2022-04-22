@@ -41,7 +41,7 @@ const SpeedRunDurationPick = ({navigation, route}) => {
       <Text style={styles.time}>
           {currentDuration} Seconds
       </Text>
-      <View style={styles.catagoryPanel}>
+      <View style={styles.categoryPanel}>
         <DurationButton time={30}/>
         <DurationButton time={45}/>
         <DurationButton time={60}/>
@@ -76,7 +76,7 @@ const styles = StyleSheet.create({
     fontSize: 20,
     marginRight: 80,
   },
-  catagoryPanel: {
+  categoryPanel: {
     flex: 5,
     alignItems: 'center',
     alignContent: 'center'
