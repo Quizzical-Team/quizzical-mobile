@@ -43,7 +43,8 @@ const styles = StyleSheet.create(
             textAlign: "right",
             fontSize: 20,
             fontWeight: "bold",
-            zIndex: 2
+            zIndex: 2,
+            marginRight: 10,
 
         }
     }

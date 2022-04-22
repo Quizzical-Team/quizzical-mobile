@@ -1,6 +1,8 @@
 import React from "react";
 import { View, Text, StyleSheet } from "react-native";
 import SpeedRunTimeBar from "./SpeedRunTimeBar";
+import SpeedRunQuizPanel from "./SpeedRunQuizPanel";
+
 const SpeedRunGameScreen = ({navigation, route}) => {
     const {duration, category} = route.params;
     console.log(duration)
@@ -8,7 +10,7 @@ const SpeedRunGameScreen = ({navigation, route}) => {
     return(
         <View style={styles.frame}>
             <SpeedRunTimeBar duration={duration} />
-
+            <SpeedRunQuizPanel />
         </View>
     )
 }
