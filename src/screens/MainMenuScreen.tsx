@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { View, Text, StyleSheet } from 'react-native'
-import CatagoryBoard from '../components/CatagoryBoard'
+import CategoryBoard from '../components/CategoryBoard'
 import MainMenuHeader from '../components/MainMenuHeader'
 import { createDrawerNavigator } from '@react-navigation/drawer'
 import { NavigationContainer } from '@react-navigation/native'
@@ -48,8 +48,8 @@ const MainMenuScreen = ({ navigation }) => {
             <View style={styles.headerPanel}>
               <MainMenuHeader navigation={navigation} />
             </View>
-            <View style={styles.catagoryPanel}>
-              <CatagoryBoard navigation={mainNavigation}/>
+            <View style={styles.categoryPanel}>
+              <CategoryBoard navigation={mainNavigation}/>
             </View>
           </View>
         )
@@ -79,7 +79,7 @@ const styles = StyleSheet.create({
     height: '15%',
     marginBottom: 30
   },
-  catagoryPanel: {
+  categoryPanel: {
     justifyContent: 'center',
     alignItems: 'center',
     alignContent: 'center'

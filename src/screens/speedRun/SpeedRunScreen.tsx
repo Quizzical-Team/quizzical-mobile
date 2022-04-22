@@ -15,7 +15,7 @@ const SpeedRunScreen = ({ navigation }) => {
     const goBack = () => {
       mainNavigation.navigate('MAINMENU')
     }
-    const handleCatagoryPick = () => {
+    const handleCategoryPick = () => {
       navigation.navigate('SPEEDRUN_CATEGORYPICK')
     }
     return (
@@ -38,7 +38,7 @@ const SpeedRunScreen = ({ navigation }) => {
           <Pressable
             style={styles.button}
             android_ripple={{ color: '#ccc' }}
-            onPress={handleCatagoryPick}
+            onPress={handleCategoryPick}
           >
             <View style={styles.buttonInner}>
               <Text style={styles.buttonText}>PICK A CATEGORY</Text>

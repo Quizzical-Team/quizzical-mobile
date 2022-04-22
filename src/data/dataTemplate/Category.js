@@ -1,4 +1,4 @@
-class Catagory {
+class Category {
     constructor(id, title, color, componentName){
         this.id = id;
         this.title = title;
@@ -7,4 +7,4 @@ class Catagory {
     }
 }
 
-export default Catagory;
+export default Category;

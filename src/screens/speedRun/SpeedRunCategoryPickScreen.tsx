@@ -15,7 +15,7 @@ const SpeedRunCategoryPickScreen = ({ navigation }) => {
         </Pressable>
         <Text style={styles.title}>Pick a Category</Text>
       </View>
-      <View style={styles.catagoryPanel}>
+      <View style={styles.categoryPanel}>
       <SpeedRunCategoryBoard navigation={navigation}/>
       </View>
     </View>
@@ -39,7 +39,7 @@ const styles = StyleSheet.create({
     fontSize: 20,
     marginRight: 80,
   },
-  catagoryPanel: {
+  categoryPanel: {
     flex: 5,
     justifyContent: 'center',
     alignItems: 'center',
