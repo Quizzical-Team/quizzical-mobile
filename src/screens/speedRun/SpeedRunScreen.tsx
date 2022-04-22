@@ -12,7 +12,12 @@ const Stack = createNativeStackNavigator()
 
 const SpeedRunScreen = ({ navigation }) => {
   const mainNavigation = navigation;
-  const SpeedRunFrame = ({ navigation }) => {
+  
+  const SpeedRunFrame = ({ navigation, route }) => {
+    const {goHome} = route.params;
+    if(goHome){
+      mainNavigation.navigate('MAINMENU')
+    }
     const goBack = () => {
       mainNavigation.navigate('MAINMENU')
     }
@@ -57,7 +62,7 @@ const SpeedRunScreen = ({ navigation }) => {
           headerShown: false
         }}
       >
-        <Stack.Screen name="SPEEDRUN_START" component={SpeedRunFrame} />
+        <Stack.Screen name="SPEEDRUN_START" component={SpeedRunFrame} initialParams={{goHome:false}}/>
         <Stack.Screen
           name="SPEEDRUN_CATEGORYPICK"
           component={SpeedRunCategoryPickScreen}

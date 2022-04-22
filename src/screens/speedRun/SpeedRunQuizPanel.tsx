@@ -6,28 +6,34 @@ import { View, Text, StyleSheet, Pressable } from 'react-native'
 import { questions } from '../../data/Questions'
 
 let answeredQuestions = []
-let currentQuestion;
-let gameStarted = false;
+let currentQuestion
+let gameStarted = false
 
 const getUnansweredQuestion = () => {
-    let randomizeIndices = Array.from(Array(questions.length).keys())
+  let randomizeIndices = Array.from(Array(questions.length).keys())
   randomizeIndices = randomizeIndices.filter((number) => {
     return !(answeredQuestions.indexOf(number) > -1)
   })
   randomizeIndices = randomizeIndices.sort(() => Math.random() - 0.5)
   answeredQuestions.push(randomizeIndices[0])
-  return questions[randomizeIndices[0]];
+  return questions[randomizeIndices[0]]
 }
 
-const SpeedRunQuizPanel = ({navigation}) => {
-  
-  const [currentQuestion, setQuestion] = useState({question:"",answers:[]})
-  const [correctAnswers, setCorrectAnswers] = useState(0)
-  const [incorrectAnswers, setInCorrectAnswers] = useState(0)
-  
-  if(!gameStarted){
-      gameStarted = true
-      setQuestion(getUnansweredQuestion());
+const SpeedRunQuizPanel = ({
+  navigation,
+  time,
+  gameStatus,
+  gameIsOver,
+  correctAnswers,
+  setCorrectAnswers,
+  incorrectAnswers,
+  setInCorrectAnswers
+}) => {
+  const [currentQuestion, setQuestion] = useState({ question: '', answers: [] })
+
+  if (!gameStarted) {
+    gameStarted = true
+    setQuestion(getUnansweredQuestion())
   }
 
   const handleAnswer = (trueness) => {
@@ -41,12 +47,15 @@ const SpeedRunQuizPanel = ({navigation}) => {
       )
     }
     console.log(answeredQuestions)
-    if(questions.length == answeredQuestions.length){
-        navigation.navigate("SPEEDRUN_STATS")
-     }
-     else{
-         setQuestion(getUnansweredQuestion)
-     }
+    if (questions.length == answeredQuestions.length) {
+      gameIsOver()
+      navigation.navigate('SPEEDRUN_STATS', {
+        correct: correctAnswers,
+        time: time
+      })
+    } else {
+      setQuestion(getUnansweredQuestion)
+    }
   }
 
   const AnswerButton = ({ answer, trueness }) => {

@@ -5,7 +5,7 @@ import SpeedRunCategoryBoard from './SpeedRunCategoryBoard'
 
 const SpeedRunCategoryPickScreen = ({ navigation }) => {
   const handleBackButton = () => {
-    navigation.navigate("SPEEDRUN_START")
+    navigation.navigate("SPEEDRUN_START", {goHome: false})
   }
   return (
     <View style={styles.frame}>

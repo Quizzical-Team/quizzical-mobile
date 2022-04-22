@@ -3,13 +3,17 @@ import { View, StyleSheet, Text, Animated } from "react-native";
 import { useSharedValue } from "react-native-reanimated";
 import SpeedRunDurationPick from "./SpeedRunDurationPick";
 
-const SpeedRunTimeBar = ({duration, navigation}) => {
+const SpeedRunTimeBar = ({duration, navigation, gameStatus, gameIsOver, correctAnswers, incorrectAnswers}) => {
     const [currentTime, setTime] = useState(duration)
 
       useEffect(()=>{
 
-            if(currentTime == 0){
-                navigation.navigate("SPEEDRUN_STATS");
+            if(currentTime == 0 && gameStatus){
+                navigation.navigate('SPEEDRUN_STATS', {
+                    correct: correctAnswers,
+                    time: duration-currentTime
+                  })
+                gameIsOver();
             }
             else{
                 setTimeout(()=>{setTime(currentTime=>currentTime-1)},1000)
