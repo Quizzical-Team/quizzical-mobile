@@ -7,7 +7,6 @@ import { questions } from '../../data/Questions'
 
 let answeredQuestions = []
 let currentQuestion
-let gameStarted = false
 
 const getUnansweredQuestion = () => {
   let randomizeIndices = Array.from(Array(questions.length).keys())
@@ -27,12 +26,14 @@ const SpeedRunQuizPanel = ({
   correctAnswers,
   setCorrectAnswers,
   incorrectAnswers,
-  setInCorrectAnswers
+  setInCorrectAnswers,
 }) => {
   const [currentQuestion, setQuestion] = useState({ question: '', answers: [] })
-
+  const [gameStarted, setGameStarted] =  useState(false)
+  
   if (!gameStarted) {
-    gameStarted = true
+    setGameStarted(true)
+    console.log("GAME STARTED")
     setQuestion(getUnansweredQuestion())
   }
 
@@ -49,6 +50,7 @@ const SpeedRunQuizPanel = ({
     console.log(answeredQuestions)
     if (questions.length == answeredQuestions.length) {
       gameIsOver()
+      answeredQuestions = []
       navigation.navigate('SPEEDRUN_STATS', {
         correct: correctAnswers,
         time: time
