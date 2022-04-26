@@ -1,38 +1,51 @@
-import React from 'react'
+import { getRandomString } from 'native-base/lib/typescript/theme/tools'
+import React, { useState } from 'react'
 import { View, Text, StyleSheet, Image } from 'react-native'
 import { loggedInUser, enemies } from '../../../data/authentication'
 
 const Enemy = (content) => {
-    console.log(content.picture)
-    return(
-        <Image source={{uri: content.picture}}
-       style={content.style} />
-    )
+  return <Image source={{ uri: content.picture }} style={content.style} />
 }
 
-const RankedLoadingScreen = ({navigation}) => {
+const RankedLoadingScreen = ({ navigation }) => {
   //TODO ENEMIES
-  var enemyComponents = []
-  for(var i = 0; i < 7; i++){
-    enemyComponents.push(<Enemy picture={enemies[i].picture} style={styles.enemy}/>)
+
+  const enemyComponent = (picture, style, id) => {
+    return <Enemy key={id} picture={picture} style={style} />
   }
 
-  const startGame = () => {
-      navigation.navigate("RANKED_GAME")
+  const [enemyComponents, setEnemyComponents] = useState([
+    enemyComponent(enemies[0].picture, styles.enemy, enemies[0].username)
+  ])
+  const addEnemy = () => {
+    if (enemyComponents.length < 7) {
+      var pic = enemies[enemyComponents.length].picture
+      var id = enemies[enemyComponents.length].username
+      setEnemyComponents((oldEnemies) => [
+        ...oldEnemies,
+        enemyComponent(pic, styles.enemy, id)
+      ])
+    }
   }
-  setTimeout(startGame, 2000);
+
+  setTimeout(addEnemy, 500)
+
+  const startGame = () => {
+    navigation.navigate("RANKED_GAME")
+  }
+  if(enemyComponents.length == 7){
+    setTimeout(startGame, 1000)
+  }
+  
 
   return (
     <View style={styles.frame}>
       <Text style={styles.title}>RANKED</Text>
-      <Image source={{uri: loggedInUser.picture}}
-       style={styles.profile} />
-       <Text style={[styles.text, {color: "blue"}]}>YOU</Text>
-       <Text style={[styles.text]}>VS</Text>
-       <Text style={[styles.text, {color: "red"}]}>ENEMIES</Text>
-       <View style={styles.enemies}>
-           {enemyComponents}
-       </View>
+      <Image source={{ uri: loggedInUser.picture }} style={styles.profile} />
+      <Text style={[styles.text, { color: 'blue' }]}>YOU</Text>
+      <Text style={[styles.text]}>VS</Text>
+      <Text style={[styles.text, { color: 'red' }]}>ENEMIES</Text>
+      <View style={styles.enemies}>{enemyComponents}</View>
     </View>
   )
 }
@@ -43,7 +56,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#303030',
     alignContent: 'center',
     alignItems: 'center',
-    textAlign: 'center',
+    textAlign: 'center'
   },
   title: {
     fontSize: 50,
@@ -54,30 +67,29 @@ const styles = StyleSheet.create({
     height: 150,
     width: 150,
     borderWidth: 3,
-    borderColor: "white",
+    borderColor: 'white',
     borderRadius: 100,
     marginHorizontal: 20,
-    marginTop: 100,
+    marginTop: 100
   },
-  text:{
+  text: {
     fontSize: 50,
     color: 'white',
-    textShadowColor: "black",
-    textShadowRadius: 30,
+    textShadowColor: 'black',
+    textShadowRadius: 30
   },
   enemies: {
-      flexDirection: "row",
-      marginTop: 10,
+    flexDirection: 'row',
+    marginTop: 10
   },
-  enemy:{
+  enemy: {
     height: 40,
     width: 40,
     borderWidth: 3,
-    borderColor: "white",
+    borderColor: 'white',
     borderRadius: 100,
-    marginHorizontal: 5,
+    marginHorizontal: 5
   }
-
 })
 
 export default RankedLoadingScreen
