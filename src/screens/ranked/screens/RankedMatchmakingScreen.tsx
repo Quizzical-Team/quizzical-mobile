@@ -39,7 +39,8 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     fontSize: 18,
     width: '80%',
-    marginTop: 30
+    marginTop: 30,
+    marginBottom: 10,
   },
   spin: {
     textAlign: 'center'

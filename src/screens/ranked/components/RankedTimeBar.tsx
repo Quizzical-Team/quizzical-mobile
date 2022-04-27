@@ -1,14 +1,21 @@
 import React, { useState, useEffect } from "react";
 import { View, StyleSheet, Text, Animated } from "react-native";
 import { useSharedValue } from "react-native-reanimated";
-
+let timeouts = []
 const RankedTimeBar = ({currentTime, setTime, duration}) => {
     
     
     useEffect( () => {
-        if(currentTime > 0){
-            setTimeout(()=>{setTime(currentTime=>currentTime-1)},1000)
+        if(currentTime == duration){
+            timeouts.forEach(element => {
+                clearTimeout(element)
+            });
         }
+        if(currentTime > 0){
+            const curTO = setTimeout(()=>{setTime(currentTime=>currentTime-1)},1000)
+            timeouts.push(curTO)
+        }
+        
     } ,[currentTime])
     
 

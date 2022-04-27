@@ -8,6 +8,7 @@ import { AntDesign } from '@expo/vector-icons'
 let answeredQuestions = []
 
 const FeedBackFrame = ({ trueness, display }) => {
+    //TODO add current ranking
   if (display) {
     if (trueness) {
       return (
@@ -44,7 +45,10 @@ const RankedGameScreen = () => {
   const [answerStatus, setAnswerStatus] = useState(false)
   const [question, setQuestion] = useState({question:"", answers:["","","",""]})
   const [numberArray, setNumberArray] = useState([0,1,2,3]);
-  const [currentTime, setTime] = useState(10);
+  const duration = 15
+  const [currentTime, setTime] = useState(duration);
+  const [currentRound, setCurrentRound] = useState(0)
+  const totalCount = 8
 
 
   const changeQuestion = () => {
@@ -64,7 +68,6 @@ const RankedGameScreen = () => {
   }
 
   useEffect(changeQuestion,[])
-  console.log(question)
 
   const showFeedBack = () => {
     setDisplayFeedback(true)
@@ -77,18 +80,17 @@ const RankedGameScreen = () => {
   const handleAnswer = (trueness) => {
     setAnswerStatus(trueness)
     showFeedBack()
-    setTime(10)
+    setTime(duration)
+    setCurrentRound( (currentRound)=>currentRound+1 )
     if (trueness) {
     } else {
     }
   }
 
-  const [currentRound, setCurrentRound] = useState(0)
-  const totalCount = 8
   return (
     <View style={styles.frame}>
       <FeedBackFrame trueness={answerStatus} display={displayFeedBack} />
-      <RankedTimeBar currentTime={currentTime} setTime={setTime} duration={10} />
+      <RankedTimeBar currentTime={currentTime} setTime={setTime} duration={duration} />
       <Text style={styles.roundCount}>
         {currentRound}/{totalCount}
       </Text>
