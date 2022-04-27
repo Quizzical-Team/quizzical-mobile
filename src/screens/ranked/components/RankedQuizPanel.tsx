@@ -15,7 +15,7 @@ const RankedQuizPanel = ({question, handleAnswer, numberArray}) => {
           android_ripple={{ color: '#ccc' }}
           style={styles.answerButtonInner}
           onPress={() => {
-            handleAnswer(trueness)
+            handleAnswer(trueness, false)
           }}
         >
           <Text style={styles.answerButtonText}>{answer}</Text>

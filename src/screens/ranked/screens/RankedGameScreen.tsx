@@ -6,11 +6,14 @@ import { questions } from '../../../data/Questions'
 import { AntDesign } from '@expo/vector-icons'
 
 let answeredQuestions = []
+const CORRECT = 'CORRECT'
+const INCORRECT = 'INCORRECT'
+const TIMEOUT = 'TIMEOUT'
 
 const FeedBackFrame = ({ trueness, display }) => {
-    //TODO add current ranking
+  //TODO add current ranking
   if (display) {
-    if (trueness) {
+    if (trueness == CORRECT) {
       return (
         <View
           style={[
@@ -22,7 +25,7 @@ const FeedBackFrame = ({ trueness, display }) => {
           <Text style={styles.feedBackText}>Correct Answer</Text>
         </View>
       )
-    } else {
+    } else if (trueness == INCORRECT) {
       return (
         <View
           style={[
@@ -34,6 +37,18 @@ const FeedBackFrame = ({ trueness, display }) => {
           <Text style={styles.feedBackText}>Wrong Answer</Text>
         </View>
       )
+    } else if (trueness == TIMEOUT) {
+      return (
+        <View
+          style={[
+            styles.feedBackFrame,
+            { backgroundColor: 'rgba(220,20,60,0.1)' }
+          ]}
+        >
+          <AntDesign name={'hourglass'} size={200} color="red" />
+          <Text style={styles.feedBackText}>Timeout!</Text>
+        </View>
+      )
     }
   } else {
     return <View></View>
@@ -42,17 +57,18 @@ const FeedBackFrame = ({ trueness, display }) => {
 
 const RankedGameScreen = () => {
   const [displayFeedBack, setDisplayFeedback] = useState(false)
-  const [answerStatus, setAnswerStatus] = useState(false)
-  const [question, setQuestion] = useState({question:"", answers:["","","",""]})
-  const [numberArray, setNumberArray] = useState([0,1,2,3]);
+  const [answerStatus, setAnswerStatus] = useState(INCORRECT)
+  const [question, setQuestion] = useState({
+    question: '',
+    answers: ['', '', '', '']
+  })
+  const [numberArray, setNumberArray] = useState([0, 1, 2, 3])
   const duration = 15
-  const [currentTime, setTime] = useState(duration);
-  const [currentRound, setCurrentRound] = useState(0)
+  const [currentTime, setTime] = useState(duration)
+  const [currentRound, setCurrentRound] = useState(1)
   const totalCount = 8
 
-
   const changeQuestion = () => {
-
     const getUnansweredQuestion = () => {
       let randomizeIndices = Array.from(Array(questions.length).keys())
       randomizeIndices = randomizeIndices.filter((number) => {
@@ -63,38 +79,54 @@ const RankedGameScreen = () => {
       return questions[randomizeIndices[0]]
     }
 
-    setNumberArray( (numberArray) => numberArray.sort(() => Math.random() - 0.5) )
-    setQuestion(getUnansweredQuestion());
+    setNumberArray((numberArray) => numberArray.sort(() => Math.random() - 0.5))
+    setQuestion(getUnansweredQuestion())
   }
 
-  useEffect(changeQuestion,[])
+  useEffect(changeQuestion, [])
 
   const showFeedBack = () => {
     setDisplayFeedback(true)
     setTimeout(() => {
       setDisplayFeedback(false)
-    }, 500)
-    setTimeout(changeQuestion, 500)
+    }, 1000)
+    setTimeout(changeQuestion, 1000)
   }
 
-  const handleAnswer = (trueness) => {
-    setAnswerStatus(trueness)
+  const handleAnswer = (trueness, timeout) => {
+    if (trueness) {
+      setAnswerStatus(CORRECT)
+    } else {
+      setAnswerStatus(INCORRECT)
+    }
+    if (timeout) {
+      setAnswerStatus(TIMEOUT)
+    }
     showFeedBack()
     setTime(duration)
-    setCurrentRound( (currentRound)=>currentRound+1 )
-    if (trueness) {
-    } else {
-    }
+    setCurrentRound((currentRound) => currentRound + 1)
+  }
+
+  if (currentTime == 0) {
+    handleAnswer(false, true)
   }
 
   return (
     <View style={styles.frame}>
       <FeedBackFrame trueness={answerStatus} display={displayFeedBack} />
-      <RankedTimeBar currentTime={currentTime} setTime={setTime} duration={duration} />
+      <RankedTimeBar
+        currentTime={currentTime}
+        setTime={setTime}
+        duration={duration}
+      />
       <Text style={styles.roundCount}>
         {currentRound}/{totalCount}
       </Text>
-      <RankedQuizPanel question={question} handleAnswer={handleAnswer} numberArray={numberArray} />
+      <RankedQuizPanel
+        question={question}
+        handleAnswer={handleAnswer}
+        numberArray={numberArray}
+      />
     </View>
   )
 }
