@@ -6,6 +6,7 @@ import { NavigationContainer } from '@react-navigation/native'
 import RankedMatchmakingScreen from './RankedMatchmakingScreen'
 import RankedLoadingScreen from './RankedLoadingScreen'
 import RankedGameScreen from './RankedGameScreen'
+import RankedStatsScreen from './RankedStatsScreen'
 
 const Stack = createNativeStackNavigator()
 
@@ -65,6 +66,7 @@ const RankedScreen = ({ navigation }) => {
         <Stack.Screen name="RANKED_MATCHMAKING" component={RankedMatchmakingScreen} initialParams={{}}/>
         <Stack.Screen name="RANKED_LOADING" component={RankedLoadingScreen} initialParams={{}}/>
         <Stack.Screen name="RANKED_GAME" component={RankedGameScreen} initialParams={{}}/>
+        <Stack.Screen name="RANKED_STATS" component={RankedStatsScreen} initialParams={{}}/>
         
       </Stack.Navigator>
     </NavigationContainer>

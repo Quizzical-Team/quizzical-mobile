@@ -31,12 +31,13 @@ const RankedLoadingScreen = ({ navigation }) => {
   setTimeout(addEnemy, 500)
 
   const startGame = () => {
-    navigation.navigate("RANKED_GAME")
+    navigation.navigate('RANKED_GAME', {
+      restart: true
+    })
   }
-  if(enemyComponents.length == 7){
+  if (enemyComponents.length == 7) {
     setTimeout(startGame, 1000)
   }
-  
 
   return (
     <View style={styles.frame}>

@@ -4,11 +4,13 @@ import RankedTimeBar from '../components/RankedTimeBar'
 import RankedQuizPanel from '../components/RankedQuizPanel'
 import { questions } from '../../../data/Questions'
 import { AntDesign } from '@expo/vector-icons'
+import { useIsFocused } from '@react-navigation/native'
 
 let answeredQuestions = []
 const CORRECT = 'CORRECT'
 const INCORRECT = 'INCORRECT'
 const TIMEOUT = 'TIMEOUT'
+let rankedClosed = false
 
 const FeedBackFrame = ({ trueness, display }) => {
   //TODO add current ranking
@@ -55,18 +57,35 @@ const FeedBackFrame = ({ trueness, display }) => {
   }
 }
 
-const RankedGameScreen = () => {
+const RankedGameScreen = ({navigation, route}) => {
   const [displayFeedBack, setDisplayFeedback] = useState(false)
   const [answerStatus, setAnswerStatus] = useState(INCORRECT)
   const [question, setQuestion] = useState({
     question: '',
     answers: ['', '', '', '']
   })
+  const [gameStatus, setGameStatus] = useState(true)
   const [numberArray, setNumberArray] = useState([0, 1, 2, 3])
   const duration = 15
   const [currentTime, setTime] = useState(duration)
   const [currentRound, setCurrentRound] = useState(1)
-  const totalCount = 8
+  const totalRound = 7
+
+  const restart = () => {
+    answeredQuestions = [];
+    setCurrentRound(1);
+    setTime(duration);
+    setGameStatus(true);
+  }
+
+  if(!useIsFocused()){
+    rankedClosed = true
+  }
+
+  if(useIsFocused() && rankedClosed){
+    restart()
+    rankedClosed = false
+  }
 
   const changeQuestion = () => {
     const getUnansweredQuestion = () => {
@@ -107,8 +126,21 @@ const RankedGameScreen = () => {
     setCurrentRound((currentRound) => currentRound + 1)
   }
 
-  if (currentTime == 0) {
+  if (currentTime == 0 && gameStatus) {
     handleAnswer(false, true)
+  }
+
+  if(currentRound == totalRound+1 && gameStatus){
+    setGameStatus(false)
+    //TODO add functionality
+    navigation.navigate("RANKED_STATS", {
+      correct: 3, 
+      questionCount: totalRound, 
+      place: 2, 
+      lp: 12, 
+      rank: "GOLD", 
+      points: 26,
+    })
   }
 
   return (
@@ -118,9 +150,10 @@ const RankedGameScreen = () => {
         currentTime={currentTime}
         setTime={setTime}
         duration={duration}
+        gameStatus={gameStatus}
       />
       <Text style={styles.roundCount}>
-        {currentRound}/{totalCount}
+        {currentRound}/{totalRound}
       </Text>
       <RankedQuizPanel
         question={question}
@@ -161,3 +194,4 @@ const styles = StyleSheet.create({
 })
 
 export default RankedGameScreen
+
