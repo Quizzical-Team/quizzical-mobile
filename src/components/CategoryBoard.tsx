@@ -1,4 +1,3 @@
-import React, { useState } from 'react'
 import { View, StyleSheet, Text, Pressable, FlatList } from 'react-native'
 import { gameModes } from '../data/Categories'
 import CategoryTile from './CategoryTile'
@@ -8,7 +7,7 @@ import CategoryTile from './CategoryTile'
 
 const CategoryBoard = ({navigation}) => {
   const renderCategoryTile = (itemData) => {
-    console.log(gameModes)
+    //console.log(gameModes)
     return <CategoryTile navigation={navigation} title={itemData.item.title} color={itemData.item.color} componentName={itemData.item.componentName}/>
   }
   return (

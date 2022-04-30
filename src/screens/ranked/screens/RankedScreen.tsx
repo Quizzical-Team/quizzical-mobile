@@ -7,6 +7,7 @@ import RankedMatchmakingScreen from './RankedMatchmakingScreen'
 import RankedLoadingScreen from './RankedLoadingScreen'
 import RankedGameScreen from './RankedGameScreen'
 import RankedStatsScreen from './RankedStatsScreen'
+import { socket } from '../../../server/socket'
 
 const Stack = createNativeStackNavigator()
 
@@ -23,7 +24,9 @@ const RankedScreen = ({ navigation }) => {
     }
 
     const handleMatchMaking = () => {
+        socket.emit("addToQueue")
         navigation.navigate("RANKED_MATCHMAKING")
+
     }
     return (
       <View style={styles.frame}>

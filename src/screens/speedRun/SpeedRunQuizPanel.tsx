@@ -33,7 +33,7 @@ const SpeedRunQuizPanel = ({
   
   if (!gameStarted) {
     setGameStarted(true)
-    console.log("GAME STARTED")
+    //console.log("GAME STARTED")
     setQuestion(getUnansweredQuestion())
   }
 
@@ -47,7 +47,7 @@ const SpeedRunQuizPanel = ({
         setInCorrectAnswers(incorrectAnswers + 1)
       )
     }
-    console.log(answeredQuestions)
+    //console.log(answeredQuestions)
     if (questions.length == answeredQuestions.length) {
       gameIsOver()
       answeredQuestions = []

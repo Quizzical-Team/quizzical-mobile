@@ -8,6 +8,7 @@ import {
 } from 'react-native'
 import LoginScreenButton from '../components/LoginScreenButton'
 import { LinearGradient } from 'expo-linear-gradient'
+import { connect } from '../server/socket'
 
 const LoginScreen = ({ navigation }) => {
   const [email, setEmail] = useState('')
@@ -23,7 +24,8 @@ const LoginScreen = ({ navigation }) => {
 
   const login = () => {
     if (authentication()) {
-      console.log('LOGGED IN');
+      //console.log('LOGGED IN');
+      connect()
       navigation.navigate('MAINMENU');
       setWarningOpacity(0)
     } else {
@@ -32,12 +34,12 @@ const LoginScreen = ({ navigation }) => {
   }
 
   const signup = () => {
-    console.log('SIGN UP')
+    //console.log('SIGN UP')
     navigation.navigate('REGISTER')
   }
 
   const forgotPass = () => {
-    console.log('pass')
+    //console.log('pass')
     navigation.navigate('FORGOTPASSWORD')
   }
 

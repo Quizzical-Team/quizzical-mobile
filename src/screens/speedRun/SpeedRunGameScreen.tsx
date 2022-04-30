@@ -11,8 +11,8 @@ const SpeedRunGameScreen = ({ navigation, route }) => {
   const gameIsOver = () => {
     setGameStatus(false)
   }
-  console.log(duration)
-  console.log(category)
+  //console.log(duration)
+  //console.log(category)
   return (
     <View style={styles.frame}>
       <SpeedRunTimeBar

@@ -13,7 +13,7 @@ const SpeedRunDurationPick = ({navigation, route}) => {
 
   const handleDurationButtons = (time) => {
       setDuration(time);
-      console.log(currentDuration)
+      //console.log(currentDuration)
       navigation.navigate("SPEEDRUN_GAME", {duration: time, category: category})
   }
 

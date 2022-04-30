@@ -8,7 +8,7 @@ const CategoryTile = ({title, color, componentName, navigation}) => {
         navigation.navigate(componentName);
     }
     
-    console.log(title)
+    //console.log(title)
     return(
         <View style={[styles.gridItem, {backgroundColor: color}]}>
             <Pressable android_ripple={{color: "#ccc"}} style={styles.button} onPress={handleComponentPress}>

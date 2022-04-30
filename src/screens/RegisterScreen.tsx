@@ -25,7 +25,7 @@ const RegisterScreen = ({ navigation }) => {
   }
 
   const signup = () => {
-    console.log('SIGN UP')
+    //console.log('SIGN UP')
     if (register()) {
       //GO TO MAIN MENU
       navigation.navigate('MAINMENU')

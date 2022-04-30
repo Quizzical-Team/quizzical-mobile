@@ -16,7 +16,7 @@ const ForgotPasswordScreen = ({ navigation }) => {
   const [warningOpacity, setWarningOpacity] = useState(0)
 
   const forgotPassword = () => {
-    console.log('RESET PASSWORD')
+    //console.log('RESET PASSWORD')
     //FORGOT PASSWORD
 
     //NAVIGATE TO LOGIN PAGE

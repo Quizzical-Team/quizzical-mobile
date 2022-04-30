@@ -8,7 +8,7 @@ const SpeedRunCategoryTile = ({title, color, componentName, navigation}) => {
        navigation.navigate("SPEEDRUN_DURATIONPICK", {category: title});
     }
     
-    console.log(title)
+    //console.log(title)
     return(
         <View style={[styles.gridItem, {backgroundColor: color}]}>
             <Pressable android_ripple={{color: "#ccc"}} style={styles.button} onPress={() => handleComponentPress(title)}>
