@@ -5,6 +5,7 @@ import RankedQuizPanel from '../components/RankedQuizPanel'
 import { questions } from '../../../data/Questions'
 import { AntDesign } from '@expo/vector-icons'
 import { useIsFocused } from '@react-navigation/native'
+import {socket} from "../../../server/socket";
 
 let answeredQuestions = []
 const CORRECT = 'CORRECT'
@@ -121,10 +122,22 @@ const RankedGameScreen = ({navigation, route}) => {
     if (timeout) {
       setAnswerStatus(TIMEOUT)
     }
-    showFeedBack()
-    setTime(duration)
-    setCurrentRound((currentRound) => currentRound + 1)
+
+    socket.emit("answerGiven")
+
+    // showFeedBack()
+    // setTime(duration)
+    // setCurrentRound((currentRound) => currentRound + 1)
   }
+
+  useEffect(() => {
+    socket.on("bothGiven", () => {
+      console.log("given: ", socket.id)
+      showFeedBack()
+      setTime(duration)
+      setCurrentRound((currentRound) => currentRound + 1)
+    })
+  }, []);
 
   if (currentTime == 0 && gameStatus) {
     handleAnswer(false, true)

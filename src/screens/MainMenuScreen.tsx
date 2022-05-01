@@ -1,10 +1,11 @@
-import React, { useState } from 'react'
+import React, {useEffect, useState} from 'react'
 import { View, Text, StyleSheet } from 'react-native'
 import CategoryBoard from '../components/CategoryBoard'
 import MainMenuHeader from '../components/MainMenuHeader'
 import { createDrawerNavigator } from '@react-navigation/drawer'
 import { NavigationContainer } from '@react-navigation/native'
 import 'react-native-gesture-handler'
+import {socket} from "../server/socket";
 
 const Drawer = createDrawerNavigator()
 
@@ -54,6 +55,15 @@ const MainMenuScreen = ({ navigation }) => {
           </View>
         )
       }
+
+    useEffect(() => {
+        socket.on('serverToClient', (data) => {
+            // alert(data);
+            console.log("aaaaaaaaaaaaaaaaaaaaaaaaaa ", socket.id);
+            // socket.emit('clientToServer', socket.id);
+        });
+    })
+
   return (
     <NavigationContainer independent={true}>
       <Drawer.Navigator

@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, {useEffect, useState} from 'react'
 import {
   View,
   Text,
@@ -8,7 +8,7 @@ import {
 } from 'react-native'
 import LoginScreenButton from '../components/LoginScreenButton'
 import { LinearGradient } from 'expo-linear-gradient'
-import { connect } from '../server/socket'
+import {connect, socket} from '../server/socket'
 
 const LoginScreen = ({ navigation }) => {
   const [email, setEmail] = useState('')
@@ -16,11 +16,13 @@ const LoginScreen = ({ navigation }) => {
   const [warningOpacity, setWarningOpacity] = useState(0)
 
   const authentication = () => {
-    if (email == 'johndoe' && password == 'abc') {
+    if (email == '' && password == '') {
       return true
     }
     return false
   }
+
+
 
   const login = () => {
     if (authentication()) {
