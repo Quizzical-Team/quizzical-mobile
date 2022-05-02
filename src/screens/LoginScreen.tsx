@@ -27,7 +27,7 @@ const LoginScreen = ({ navigation }) => {
   const login = () => {
     if (authentication()) {
       //console.log('LOGGED IN');
-      connect()
+      // connect()
       navigation.navigate('MAINMENU');
       setWarningOpacity(0)
     } else {

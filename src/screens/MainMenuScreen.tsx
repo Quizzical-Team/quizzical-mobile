@@ -57,11 +57,11 @@ const MainMenuScreen = ({ navigation }) => {
       }
 
     useEffect(() => {
-        socket.on('serverToClient', (data) => {
-            // alert(data);
-            console.log("aaaaaaaaaaaaaaaaaaaaaaaaaa ", socket.id);
-            // socket.emit('clientToServer', socket.id);
-        });
+        // socket.on('serverToClient', (data) => {
+        //     // alert(data);
+        //     console.log("aaaaaaaaaaaaaaaaaaaaaaaaaa ", socket.id);
+        //     // socket.emit('clientToServer', socket.id);
+        // });
     })
 
   return (

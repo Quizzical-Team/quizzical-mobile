@@ -6,6 +6,7 @@ import { questions } from '../../../data/Questions'
 import { AntDesign } from '@expo/vector-icons'
 import { useIsFocused } from '@react-navigation/native'
 import {socket} from "../../../server/socket";
+import {io} from "socket.io-client";
 
 let answeredQuestions = []
 const CORRECT = 'CORRECT'
@@ -71,6 +72,8 @@ const RankedGameScreen = ({navigation, route}) => {
   const [currentTime, setTime] = useState(duration)
   const [currentRound, setCurrentRound] = useState(1)
   const totalRound = 7
+  // let answerGiven = false;
+  const [socket, setSocket] = useState(io(""));
 
   const restart = () => {
     answeredQuestions = [];
@@ -103,7 +106,7 @@ const RankedGameScreen = ({navigation, route}) => {
     setQuestion(getUnansweredQuestion())
   }
 
-  useEffect(changeQuestion, [])
+  // useEffect(changeQuestion, [])
 
   const showFeedBack = () => {
     setDisplayFeedback(true)
@@ -123,7 +126,10 @@ const RankedGameScreen = ({navigation, route}) => {
       setAnswerStatus(TIMEOUT)
     }
 
-    socket.emit("answerGiven")
+    // answerGiven = true;
+
+    socket.emit("answerGiven");
+
 
     // showFeedBack()
     // setTime(duration)
@@ -131,12 +137,54 @@ const RankedGameScreen = ({navigation, route}) => {
   }
 
   useEffect(() => {
+
+    // answerGiven = false;
+
+    let ip=""; // enter the ip on which server operates
+    let socket = io(`http://${ip}:3000`)
+
+    setSocket(socket);
+
+    socket.open();
+
+    socket.emit("addToQueue");
+
+    socket.on("serverToClient", (data) => {
+      console.log(data);
+    })
+
+    socket.on('gameFound', (res) => {
+      console.log("found the gaaame ", res);
+      // navigation.navigate("RANKED_LOADING")
+    })
+
     socket.on("bothGiven", () => {
       console.log("given: ", socket.id)
       showFeedBack()
       setTime(duration)
       setCurrentRound((currentRound) => currentRound + 1)
     })
+
+    // socket.emit("answerGiven");
+
+    // const getAnswerGiven = async () => {
+    //   return new Promise<void>((resolve, reject) => {
+    //     const wait = setInterval(() => {
+    //       if(answerGiven){
+    //         socket.emit("answerGiven");
+    //
+    //         clearInterval(wait);
+    //         resolve();
+    //       }
+    //     }, 100);
+    //   })
+    // }
+    //
+    // getAnswerGiven().then(() => {
+    //   answerGiven = false;
+    // });
+
+    return(() => {socket.close()})
   }, []);
 
   if (currentTime == 0 && gameStatus) {
