@@ -28,7 +28,7 @@ const FeedBackFrame = ({ trueness, display }) => {
           <AntDesign name={'checkcircle'} size={200} color="green" />
           <Text style={styles.feedBackText}>Correct Answer</Text>
         </View>
-      )
+      );
     } else if (trueness == INCORRECT) {
       return (
         <View
@@ -40,7 +40,7 @@ const FeedBackFrame = ({ trueness, display }) => {
           <AntDesign name={'closecircle'} size={200} color="red" />
           <Text style={styles.feedBackText}>Wrong Answer</Text>
         </View>
-      )
+      );
     } else if (trueness == TIMEOUT) {
       return (
         <View
@@ -52,10 +52,10 @@ const FeedBackFrame = ({ trueness, display }) => {
           <AntDesign name={'hourglass'} size={200} color="red" />
           <Text style={styles.feedBackText}>Timeout!</Text>
         </View>
-      )
+      );
     }
   } else {
-    return <View></View>
+    return (<View></View>);
   }
 }
 
@@ -68,12 +68,11 @@ const RankedGameScreen = ({navigation, route}) => {
   })
   const [gameStatus, setGameStatus] = useState(true)
   const [numberArray, setNumberArray] = useState([0, 1, 2, 3])
-  const duration = 15
+  const duration = 5
   const [currentTime, setTime] = useState(duration)
   const [currentRound, setCurrentRound] = useState(1)
   const totalRound = 7
-  // let answerGiven = false;
-  const [socket, setSocket] = useState(io(""));
+  // const [socket, setSocket] = useState(io(""));
 
   const restart = () => {
     answeredQuestions = [];
@@ -106,14 +105,15 @@ const RankedGameScreen = ({navigation, route}) => {
     setQuestion(getUnansweredQuestion())
   }
 
-  // useEffect(changeQuestion, [])
+  useEffect(changeQuestion, [])
 
   const showFeedBack = () => {
     setDisplayFeedback(true)
-    setTimeout(() => {
-      setDisplayFeedback(false)
-    }, 1000)
-    setTimeout(changeQuestion, 1000)
+    // setTimeout(() => {
+    //   setDisplayFeedback(false)
+    // }, 1000)
+    // setTimeout(changeQuestion, 1000)
+    socket.emit("answerGiven");
   }
 
   const handleAnswer = (trueness, timeout) => {
@@ -124,72 +124,66 @@ const RankedGameScreen = ({navigation, route}) => {
     }
     if (timeout) {
       setAnswerStatus(TIMEOUT)
+      setDisplayFeedback(true)
+      setTimeout(() => {
+        setDisplayFeedback(false)
+      }, 1000)
+      // setTimeout(changeQuestion, 1000)
+      return;
     }
 
-    // answerGiven = true;
+    showFeedBack()
 
-    socket.emit("answerGiven");
-
-
-    // showFeedBack()
-    // setTime(duration)
-    // setCurrentRound((currentRound) => currentRound + 1)
   }
 
   useEffect(() => {
 
-    // answerGiven = false;
+    // let ip=""; // enter the ip on which server operates
+    // let socket = io(`http://${ip}:3000`)
 
-    let ip=""; // enter the ip on which server operates
-    let socket = io(`http://${ip}:3000`)
+    // setSocket(socket);
 
-    setSocket(socket);
+    // socket.open();
 
-    socket.open();
+    // socket.emit("addToQueue");
 
-    socket.emit("addToQueue");
-
-    socket.on("serverToClient", (data) => {
-      console.log(data);
-    })
-
-    socket.on('gameFound', (res) => {
-      console.log("found the gaaame ", res);
-      // navigation.navigate("RANKED_LOADING")
-    })
+    // socket.on("serverToClient", (data) => {
+    //   console.log(data);
+    // })
+    //
+    // socket.on('gameFound', (res) => {
+    //   console.log("found the gaaame ", res);
+    //   // navigation.navigate("RANKED_LOADING")
+    // })
 
     socket.on("bothGiven", () => {
       console.log("given: ", socket.id)
-      showFeedBack()
+
+      setTimeout(() => {
+        setDisplayFeedback(false)
+      }, 1000)
+
+      changeQuestion();
       setTime(duration)
       setCurrentRound((currentRound) => currentRound + 1)
     })
 
-    // socket.emit("answerGiven");
-
-    // const getAnswerGiven = async () => {
-    //   return new Promise<void>((resolve, reject) => {
-    //     const wait = setInterval(() => {
-    //       if(answerGiven){
-    //         socket.emit("answerGiven");
-    //
-    //         clearInterval(wait);
-    //         resolve();
-    //       }
-    //     }, 100);
-    //   })
-    // }
-    //
-    // getAnswerGiven().then(() => {
-    //   answerGiven = false;
-    // });
-
     return(() => {socket.close()})
   }, []);
 
-  if (currentTime == 0 && gameStatus) {
-    handleAnswer(false, true)
-  }
+
+  useEffect(() => {
+    if (currentTime == 0 && gameStatus) {
+      // handleAnswer(false, true)
+
+      setAnswerStatus(TIMEOUT)
+      setDisplayFeedback(true)
+
+      socket.emit("answerGiven")
+
+    }
+  })
+
 
   if(currentRound == totalRound+1 && gameStatus){
     setGameStatus(false)

@@ -2,7 +2,7 @@ import { AntDesign } from '@expo/vector-icons'
 import React, { useEffect, useState } from 'react'
 import { View, Text, StyleSheet } from 'react-native'
 import * as Progress from 'react-native-progress'
-import { socket } from '../../../server/socket'
+import { socket, connect } from '../../../server/socket'
 
 const RankedMatchmakingScreen = ({navigation}) => {
 
@@ -21,6 +21,10 @@ const RankedMatchmakingScreen = ({navigation}) => {
   }
   
   useEffect(()=>{
+
+    connect();
+
+    // socket.emit("addToQueue");
 
     // socket.on('gameFound', (res) => {
     //   console.log("found the gaaame ", res);
