@@ -29,7 +29,7 @@ const RankedLoadingScreen = ({ navigation }) => {
     }
   }
 
-  setTimeout(addEnemy, 500)
+  // setTimeout(addEnemy, 500)
 
   const startGame = () => {
     navigation.navigate('RANKED_GAME', {
@@ -41,6 +41,8 @@ const RankedLoadingScreen = ({ navigation }) => {
   // }
 
   useEffect(() => {
+    // setTimeout(addEnemy, 500)
+
     socket.emit("addToQueue");
 
     socket.on('gameFound', (res) => {
@@ -49,7 +51,7 @@ const RankedLoadingScreen = ({ navigation }) => {
         restart: true
       })
     })
-  })
+  }, [])
 
   return (
     <View style={styles.frame}>

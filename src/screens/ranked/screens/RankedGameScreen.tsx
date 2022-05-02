@@ -132,8 +132,8 @@ const RankedGameScreen = ({navigation, route}) => {
       return;
     }
 
-    showFeedBack()
-
+    setDisplayFeedback(true)
+    socket.emit("answerGiven");
   }
 
   useEffect(() => {
@@ -159,44 +159,50 @@ const RankedGameScreen = ({navigation, route}) => {
     socket.on("bothGiven", () => {
       console.log("given: ", socket.id)
 
-      setTimeout(() => {
+      // setTimeout(() => {
         setDisplayFeedback(false)
-      }, 1000)
+      // }, 500)
 
       changeQuestion();
       setTime(duration)
       setCurrentRound((currentRound) => currentRound + 1)
     })
 
+    // if (currentTime == 0 && gameStatus) {
+    //   setAnswerStatus(TIMEOUT)
+    //   setDisplayFeedback(true)
+    //
+    //   socket.emit("answerGiven")
+    // }
+
     return(() => {socket.close()})
-  }, []);
+  },[]);
 
 
   useEffect(() => {
     if (currentTime == 0 && gameStatus) {
-      // handleAnswer(false, true)
-
       setAnswerStatus(TIMEOUT)
       setDisplayFeedback(true)
 
       socket.emit("answerGiven")
-
     }
-  })
+  }, [currentTime])
 
+  useEffect(() => {
+    if(currentRound == totalRound+1 && gameStatus){
+      setGameStatus(false)
+      //TODO add functionality
+      navigation.navigate("RANKED_STATS", {
+        correct: 3,
+        questionCount: totalRound,
+        place: 2,
+        lp: 12,
+        rank: "GOLD",
+        points: 26,
+      })
+    }
+  }, [currentRound])
 
-  if(currentRound == totalRound+1 && gameStatus){
-    setGameStatus(false)
-    //TODO add functionality
-    navigation.navigate("RANKED_STATS", {
-      correct: 3, 
-      questionCount: totalRound, 
-      place: 2, 
-      lp: 12, 
-      rank: "GOLD", 
-      points: 26,
-    })
-  }
 
   return (
     <View style={styles.frame}>
