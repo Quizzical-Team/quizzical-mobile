@@ -11,6 +11,8 @@ import LoginScreenButton from '../components/LoginScreenButton'
 import { LinearGradient } from 'expo-linear-gradient'
 import { AntDesign } from '@expo/vector-icons'
 
+const styles = require('../style')
+
 const ForgotPasswordScreen = ({ navigation }) => {
   const [email, setEmail] = useState('')
   const [warningOpacity, setWarningOpacity] = useState(0)
@@ -51,44 +53,5 @@ const ForgotPasswordScreen = ({ navigation }) => {
     </LinearGradient>
   )
 }
-
-const styles = StyleSheet.create({
-  back: {
-    position: 'absolute',
-    top: 50,
-    left: 30
-  },
-  mainScreen: {
-    backgroundColor: 'black',
-    height: '100%',
-    width: '100%',
-    justifyContent: 'center',
-    alignItems: 'center'
-  },
-  warning: {
-    color: 'darkred',
-    opacity: 0
-  },
-  loginText: {
-    textAlign: 'center',
-    fontSize: 40
-  },
-  inputs: {
-    width: 300,
-    height: 60,
-    backgroundColor: 'white',
-    margin: 10,
-    borderRadius: 40,
-    paddingLeft: 30
-  },
-  signUpButton: {
-    width: 300,
-    height: 60,
-    backgroundColor: '#EF5050',
-    margin: 5,
-    borderRadius: 40,
-    overflow: 'hidden'
-  }
-})
 
 export default ForgotPasswordScreen

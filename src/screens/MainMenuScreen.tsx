@@ -6,6 +6,8 @@ import { createDrawerNavigator } from '@react-navigation/drawer'
 import { NavigationContainer } from '@react-navigation/native'
 import 'react-native-gesture-handler'
 
+const styles = require('../style')
+
 const Drawer = createDrawerNavigator()
 
 
@@ -70,23 +72,5 @@ const MainMenuScreen = ({ navigation }) => {
     </NavigationContainer>
   )
 }
-
-const styles = StyleSheet.create({
-  mainFrame: {
-    flex: 1
-  },
-  headerPanel: {
-    height: '15%',
-    marginBottom: 30
-  },
-  categoryPanel: {
-    justifyContent: 'center',
-    alignItems: 'center',
-    alignContent: 'center'
-  },
-  drawer: {
-    backgroundColor: '#333E63'
-  }
-})
 
 export default MainMenuScreen

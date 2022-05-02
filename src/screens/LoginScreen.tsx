@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import {
   View,
   Text,
@@ -9,37 +9,46 @@ import {
 import LoginScreenButton from '../components/LoginScreenButton'
 import { LinearGradient } from 'expo-linear-gradient'
 import { connect } from '../server/socket'
+import { logInWithUsernamePassword, validateTokenFromStorage } from '../services/userService'
+
+const styles = require('../style')
 
 const LoginScreen = ({ navigation }) => {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [warningOpacity, setWarningOpacity] = useState(0)
 
-  const authentication = () => {
-    if (email == 'johndoe' && password == 'abc') {
-      return true
-    }
-    return false
-  }
+  const authentication = async () => 
+    await logInWithUsernamePassword(email, password)
+
+  useEffect(() => {
+    validateTokenFromStorage().then(
+      (response) => {
+        if (response) {
+          navigation.navigate('MAINMENU');
+        }
+      }
+    )
+  }, [])
 
   const login = () => {
-    if (authentication()) {
-      //console.log('LOGGED IN');
-      connect()
-      navigation.navigate('MAINMENU');
-      setWarningOpacity(0)
-    } else {
-      setWarningOpacity(1)
-    }
+    authentication().then((response) => {
+      if (response) {
+        connect()
+        navigation.navigate('MAINMENU');
+        setWarningOpacity(0)
+      } else {
+        setWarningOpacity(1)
+      }
+    })
+    
   }
 
   const signup = () => {
-    //console.log('SIGN UP')
     navigation.navigate('REGISTER')
   }
 
   const forgotPass = () => {
-    //console.log('pass')
     navigation.navigate('FORGOTPASSWORD')
   }
 
@@ -82,47 +91,5 @@ const LoginScreen = ({ navigation }) => {
     </LinearGradient>
   )
 }
-
-const styles = StyleSheet.create({
-  mainScreen: {
-    backgroundColor: 'black',
-    height: '100%',
-    width: '100%',
-    justifyContent: 'center',
-    alignItems: 'center'
-  },
-  warning: {
-    color: 'darkred',
-    opacity: 0
-  },
-  loginText: {
-    textAlign: 'center',
-    fontSize: 40
-  },
-  inputs: {
-    width: 300,
-    height: 60,
-    backgroundColor: 'white',
-    margin: 10,
-    borderRadius: 40,
-    paddingLeft: 30
-  },
-  loginButton: {
-    width: 300,
-    height: 60,
-    backgroundColor: 'black',
-    margin: 5,
-    borderRadius: 40,
-    overflow: 'hidden'
-  },
-  signUpButton: {
-    width: 300,
-    height: 60,
-    backgroundColor: '#EF5050',
-    margin: 5,
-    borderRadius: 40,
-    overflow: 'hidden'
-  }
-})
 
 export default LoginScreen

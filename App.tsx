@@ -1,5 +1,5 @@
 import { StatusBar } from 'expo-status-bar'
-import { StyleSheet, Text, View } from 'react-native'
+import { AsyncStorage, StyleSheet, Text, View } from 'react-native'
 import LoginScreen from './src/screens/LoginScreen'
 import { NavigationContainer } from '@react-navigation/native'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
@@ -9,6 +9,7 @@ import MainMenuScreen from './src/screens/MainMenuScreen'
 import SpeedRunScreen from './src/screens/speedRun/SpeedRunScreen'
 import RankedScreen from './src/screens/ranked/screens/RankedScreen'
 
+const styles = require('./src/style')
 
 const Stack = createNativeStackNavigator()
 
@@ -36,12 +37,3 @@ export default function App() {
     </>
   )
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center'
-  }
-})
