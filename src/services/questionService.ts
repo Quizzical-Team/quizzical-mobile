@@ -13,13 +13,9 @@ export const getQuestionsByPage = async () => {
       }
     }
   )
-  console.log('geldim');
-  console.log('gidiyorum');
   
   if (response.ok) {
-    console.log(response.body)
-        const json = await response.json()
-        console.log(json)
+    const json = await response.json()
   }                                                                          
   else
     console.log(response.status)

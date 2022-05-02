@@ -12,3 +12,5 @@ web-build/
 template
 # macOS
 .DS_Store
+
+*.log
