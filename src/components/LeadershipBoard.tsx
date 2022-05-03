@@ -75,8 +75,16 @@ const LeadershipBoard = () => {
   return (
     <LinearGradient colors={['#b4f4fa', '#789eff']} style={styles.frame}>
       <Text style={styles.title}>Leader Board</Text>
-      <ScrollView style={styles.list} showsVerticalScrollIndicator={false} >
-          {players.map((player) => {
+      <ScrollView style={styles.list} showsVerticalScrollIndicator={false}>
+        {players
+          .sort((a, b) => {
+            if (a.score < b.score) {
+              return 1
+            } else {
+              return -1
+            }
+          })
+          .map((player) => {
             return (
               <UserRow
                 key={player.username}
