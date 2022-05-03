@@ -1,8 +1,10 @@
+import { AntDesign } from "@expo/vector-icons";
+import { LinearGradient } from "expo-linear-gradient";
 import { background } from "native-base/lib/typescript/theme/styled-system";
 import React from "react";
 import { View, Pressable, Text, StyleSheet } from "react-native";
 
-const CategoryTile = ({title, color, componentName, navigation}) => {
+const CategoryTile = ({title, color, componentName, icon, navigation}) => {
 
     const handleComponentPress = () => {
         navigation.navigate(componentName);
@@ -10,13 +12,14 @@ const CategoryTile = ({title, color, componentName, navigation}) => {
     
     //console.log(title)
     return(
-        <View style={[styles.gridItem, {backgroundColor: color}]}>
+        <LinearGradient colors={color} style={styles.gridItem}>
             <Pressable android_ripple={{color: "#ccc"}} style={styles.button} onPress={handleComponentPress}>
                 <View style={styles.innerContainer}>
+                    <AntDesign name={icon} size={70} color="black" />
                     <Text style={styles.title}>{title}</Text>
                 </View>
             </Pressable>
-        </View>
+        </LinearGradient>
     );
 };
 
@@ -44,6 +47,7 @@ const styles = StyleSheet.create({
     },
     title: {
         fontWeight: "bold",
+        paddingTop: 10,
 
     }
 })

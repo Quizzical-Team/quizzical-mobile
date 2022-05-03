@@ -1,6 +1,7 @@
 import React, { useEffect, useLayoutEffect, useState } from 'react'
 import { View, StyleSheet, Pressable, Text, Image, AsyncStorage } from 'react-native'
 import { AntDesign } from '@expo/vector-icons'
+import { LinearGradient } from 'expo-linear-gradient'
 
 const MainMenuHeader = ({navigation}) => {
   const [user, setUser] = useState({})
@@ -27,7 +28,7 @@ const MainMenuHeader = ({navigation}) => {
       navigation.openDrawer();
   }
   return (
-    <View style={styles.header}>
+    <LinearGradient colors={['black', '#1f1f1f','#242424','#4f4f4f','#e8e8e8']} style={styles.header}>
       <Pressable style={styles.menu} onPress={drawerHandler}>
         <AntDesign name="menufold" size={36} color="white" />
       </Pressable>
@@ -37,14 +38,13 @@ const MainMenuHeader = ({navigation}) => {
       <Text style={styles.username}>{user.name}</Text>
       </View>
       
-    </View>
+    </LinearGradient>
   )
 }
 
 const styles = StyleSheet.create({
   header: {
     flex: 1,
-    backgroundColor: '#333E63',
     width: '100%',
     borderBottomEndRadius: 20,
   },
@@ -54,11 +54,11 @@ const styles = StyleSheet.create({
     left: 30
   },
   userInfo:{
-    paddingTop: "3%",
     flex: 1,
     alignContent: "center",
     alignItems: "center",
     flexDirection: "row-reverse",
+    paddingBottom: 15,
   },
   username:{
       color: "white",

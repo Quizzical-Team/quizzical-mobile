@@ -2,13 +2,18 @@ import { View, StyleSheet, Text, Pressable, FlatList } from 'react-native'
 import { gameModes } from '../data/Categories'
 import CategoryTile from './CategoryTile'
 
-
-
-
-const CategoryBoard = ({navigation}) => {
+const CategoryBoard = ({ navigation }) => {
   const renderCategoryTile = (itemData) => {
     //console.log(gameModes)
-    return <CategoryTile navigation={navigation} title={itemData.item.title} color={itemData.item.color} componentName={itemData.item.componentName}/>
+    return (
+      <CategoryTile
+        navigation={navigation}
+        title={itemData.item.title}
+        color={itemData.item.color}
+        componentName={itemData.item.componentName}
+        icon={itemData.item.icon}
+      />
+    )
   }
   return (
     <FlatList
@@ -16,7 +21,7 @@ const CategoryBoard = ({navigation}) => {
       data={gameModes}
       keyExtractor={(item) => item.id}
       renderItem={renderCategoryTile}
-      numColumns = {2}
+      numColumns={2}
     />
   )
 }

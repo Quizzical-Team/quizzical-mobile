@@ -54,7 +54,7 @@ const LoginScreen = ({ navigation }) => {
       <TextInput
         style={styles.inputs}
         placeholder="Email"
-        keyboardType="default"
+        keyboardType="email-address"
         autoCapitalize="none"
         onChangeText={setUsername}
         />
@@ -62,7 +62,6 @@ const LoginScreen = ({ navigation }) => {
         style={styles.inputs}
         secureTextEntry={true}
         placeholder="Password"
-        keyboardType='visible-password'
         onChangeText={setPassword}
         />
       <Text style={[styles.warning, {opacity: warningOpacity}]}>Incorrect credentials</Text>

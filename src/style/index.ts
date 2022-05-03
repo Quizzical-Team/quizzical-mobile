@@ -8,11 +8,12 @@ module.exports = StyleSheet.create({
     justifyContent: 'center'
   },
   mainFrame: {
-    flex: 1
+    flex: 1,
+    backgroundColor: "#e8e8e8"
   },
   headerPanel: {
-    height: '15%',
-    marginBottom: 30
+    height: '18%',
+    marginBottom: 10,
   },
   categoryPanel: {
     justifyContent: 'center',
@@ -20,7 +21,7 @@ module.exports = StyleSheet.create({
     alignContent: 'center',
   },
   drawer: {
-    backgroundColor: '#333E63'
+    backgroundColor: '#113E63'
   },
   mainScreen: {
     backgroundColor: 'black',
