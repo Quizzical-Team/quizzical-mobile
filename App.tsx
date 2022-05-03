@@ -8,18 +8,16 @@ import ForgotPasswordScreen from './src/screens/ForgotPasswordScreen'
 import MainMenuScreen from './src/screens/MainMenuScreen'
 import SpeedRunScreen from './src/screens/speedRun/SpeedRunScreen'
 import RankedScreen from './src/screens/ranked/screens/RankedScreen'
+import React from 'react'
 import StreakScreen from './src/screens/streak/screens/StreakScreen'
 
-const styles = require('./src/style')
-
 const Stack = createNativeStackNavigator()
-
 export default function App() {
   return (
     <>
       <StatusBar style="auto" hidden/>
       <NavigationContainer>
-        <Stack.Navigator 
+        <Stack.Navigator
           screenOptions={{
             headerShown: false,
             animation: "fade",

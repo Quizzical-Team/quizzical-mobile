@@ -11,6 +11,12 @@ const styles = require('../style')
 
 const Drawer = createDrawerNavigator()
 
+async function onLogoutPress(mainNavigation) {
+    await AsyncStorage.clear()
+    console.log('logout')
+    mainNavigation.navigate("LOGIN")
+}
+
 const Profile = ({ navigation }) => {
   return (
       <View style={styles.mainFrame}>
@@ -77,7 +83,9 @@ const MainMenuScreen = ({ navigation }) => {
               <DrawerItemList {...props} />
               <DrawerItem
                 label="Logout"
-                onPress={() => mainNavigation.navigate("LOGIN")} />
+                onPress={ async () => {
+                    await onLogoutPress(mainNavigation)
+                }} />
             </DrawerContentScrollView>
           )
         }}>

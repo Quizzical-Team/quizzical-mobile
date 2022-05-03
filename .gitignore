@@ -12,5 +12,5 @@ web-build/
 template
 # macOS
 .DS_Store
-
+.idea/
 *.log
