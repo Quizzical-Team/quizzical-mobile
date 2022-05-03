@@ -8,6 +8,7 @@ import ForgotPasswordScreen from './src/screens/ForgotPasswordScreen'
 import MainMenuScreen from './src/screens/MainMenuScreen'
 import SpeedRunScreen from './src/screens/speedRun/SpeedRunScreen'
 import RankedScreen from './src/screens/ranked/screens/RankedScreen'
+import StreakScreen from './src/screens/streak/screens/StreakScreen'
 
 const styles = require('./src/style')
 
@@ -42,6 +43,9 @@ export default function App() {
           <Stack.Screen
             name="RANKED"
             component={RankedScreen} />
+            <Stack.Screen
+            name="STREAK"
+            component={StreakScreen} />
         </Stack.Navigator>
       </NavigationContainer>
     </>
