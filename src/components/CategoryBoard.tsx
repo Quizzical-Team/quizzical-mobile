@@ -22,6 +22,7 @@ const CategoryBoard = ({ navigation }) => {
       keyExtractor={(item) => item.id}
       renderItem={renderCategoryTile}
       numColumns={2}
+      scrollEnabled={false}
     />
   )
 }

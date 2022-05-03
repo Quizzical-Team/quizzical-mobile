@@ -22,6 +22,7 @@ export default function App() {
           screenOptions={{
             headerShown: false,
             animation: "fade",
+            gestureEnabled: false
           }}
         >
           <Stack.Screen

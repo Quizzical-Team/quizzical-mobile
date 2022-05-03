@@ -35,6 +35,8 @@ const styles = StyleSheet.create({
         shadowOffset: {width: 0, height:2},
         shadowRadius: 8,
         overflow: "hidden",
+        borderWidth: 0.5,
+        borderColor: "black",
     },
     button: {
         flex: 1,
