@@ -9,14 +9,18 @@ module.exports = StyleSheet.create({
   },
   mainFrame: {
     flex: 1,
-    backgroundColor: "#e8e8e8"
+    backgroundColor: "#303030"
   },
   headerPanel: {
-    height: '18%',
+    height: '13%',
     marginBottom: 10,
   },
   categoryPanel: {
     justifyContent: 'center',
+    alignItems: 'center',
+    alignContent: 'center',
+  },
+  leaderPanel: {
     alignItems: 'center',
     alignContent: 'center',
   },
