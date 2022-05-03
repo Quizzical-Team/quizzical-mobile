@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { View, StyleSheet, Text, Animated } from "react-native";
 import { useSharedValue } from "react-native-reanimated";
 import SpeedRunDurationPick from "./SpeedRunDurationPick";
@@ -18,7 +18,8 @@ const SpeedRunTimeBar = ({duration, navigation, gameStatus, gameIsOver, correctA
             else{
                 setTimeout(()=>{setTime(currentTime=>currentTime-1)},1000)
             }
-            setTimeLeft(currentTime)
+                    setTimeLeft(currentTime)
+            
       },[ currentTime])
 
     return(

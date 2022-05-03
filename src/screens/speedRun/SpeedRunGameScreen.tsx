@@ -13,6 +13,13 @@ const SpeedRunGameScreen = ({ navigation, route }) => {
     setGameStatus(false)
   }
 
+  const navigateStatsScreen = (correctCount) => {
+    navigation.navigate('SPEEDRUN_STATS', {
+      correct: correctCount,
+      time: duration-timeLeft,
+    })
+  }
+
 
   //console.log(duration)
   //console.log(category)
@@ -36,7 +43,7 @@ const SpeedRunGameScreen = ({ navigation, route }) => {
         incorrectAnswers={incorrectAnswers}
         setCorrectAnswers={setCorrectAnswers}
         setInCorrectAnswers={setInCorrectAnswers}
-        timeLeft={timeLeft}
+        navigateStatsScreen={navigateStatsScreen}
       />
     </View>
   )
