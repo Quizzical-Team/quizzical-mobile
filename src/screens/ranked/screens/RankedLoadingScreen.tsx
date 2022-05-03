@@ -1,7 +1,8 @@
 import { getRandomString } from 'native-base/lib/typescript/theme/tools'
-import React, { useState } from 'react'
+import React, {useEffect, useState} from 'react'
 import { View, Text, StyleSheet, Image } from 'react-native'
 import { loggedInUser, enemies } from '../../../data/authentication'
+import {socket} from "../../../server/socket";
 
 const Enemy = (content) => {
   return <Image source={{ uri: content.picture }} style={content.style} />
@@ -28,16 +29,29 @@ const RankedLoadingScreen = ({ navigation }) => {
     }
   }
 
-  setTimeout(addEnemy, 500)
+  // setTimeout(addEnemy, 500)
 
   const startGame = () => {
     navigation.navigate('RANKED_GAME', {
       restart: true
     })
   }
-  if (enemyComponents.length == 7) {
-    setTimeout(startGame, 1000)
-  }
+  // if (enemyComponents.length == 7) {
+  //   setTimeout(startGame, 1000)
+  // }
+
+  useEffect(() => {
+    // setTimeout(addEnemy, 500)
+
+    socket.emit("addToQueue");
+
+    socket.on('gameFound', (res) => {
+      console.log("found the gaaame ", res);
+      navigation.navigate('RANKED_GAME', {
+        restart: true
+      })
+    })
+  }, [])
 
   return (
     <View style={styles.frame}>

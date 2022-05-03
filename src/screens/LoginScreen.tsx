@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, {useEffect, useState} from 'react'
 import {
   Text,
   TextInput,
@@ -6,7 +6,7 @@ import {
 } from 'react-native'
 import LoginScreenButton from '../components/LoginScreenButton'
 import { LinearGradient } from 'expo-linear-gradient'
-import { connect } from '../server/socket'
+import {connect, socket} from '../server/socket'
 import { logInWithUsernamePassword, validateTokenFromStorage } from '../services/userService'
 
 const validator = require('validator')

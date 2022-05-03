@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, {useEffect, useState} from 'react'
 import { View, Text, StyleSheet, AsyncStorage, Pressable } from 'react-native'
 import CategoryBoard from '../components/CategoryBoard'
 import MainMenuHeader from '../components/MainMenuHeader'

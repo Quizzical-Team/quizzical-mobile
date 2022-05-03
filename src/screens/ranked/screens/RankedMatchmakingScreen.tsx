@@ -2,10 +2,11 @@ import { AntDesign } from '@expo/vector-icons'
 import React, { useEffect, useState } from 'react'
 import { View, Text, StyleSheet } from 'react-native'
 import * as Progress from 'react-native-progress'
-import { socket } from '../../../server/socket'
+import { socket, connect } from '../../../server/socket'
 
 const RankedMatchmakingScreen = ({navigation}) => {
-    const [progress, setTime] = useState(0.0)
+
+  const [progress, setTime] = useState(0.0)
   const matchmake = () => {
     //TODO
     
@@ -16,14 +17,19 @@ const RankedMatchmakingScreen = ({navigation}) => {
   }
 
   if(progress>=1){
-      // navigation.navigate("RANKED_LOADING")
+      navigation.navigate("RANKED_LOADING")
   }
   
   useEffect(()=>{
-    socket.on('gameFound', (res) => {
-      console.log("found the gaaame ", res);
-      navigation.navigate("RANKED_LOADING")
-    })
+
+    connect();
+
+    // socket.emit("addToQueue");
+
+    // socket.on('gameFound', (res) => {
+    //   console.log("found the gaaame ", res);
+    //   navigation.navigate("RANKED_LOADING")
+    // })
   } ,[])
   
   

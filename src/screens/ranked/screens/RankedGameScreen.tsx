@@ -5,6 +5,8 @@ import RankedQuizPanel from '../components/RankedQuizPanel'
 import { questions } from '../../../data/Questions'
 import { AntDesign } from '@expo/vector-icons'
 import { useIsFocused } from '@react-navigation/native'
+import {socket} from "../../../server/socket";
+import {io} from "socket.io-client";
 
 let answeredQuestions = []
 const CORRECT = 'CORRECT'
@@ -26,7 +28,7 @@ const FeedBackFrame = ({ trueness, display }) => {
           <AntDesign name={'checkcircle'} size={200} color="green" />
           <Text style={styles.feedBackText}>Correct Answer</Text>
         </View>
-      )
+      );
     } else if (trueness == INCORRECT) {
       return (
         <View
@@ -38,7 +40,7 @@ const FeedBackFrame = ({ trueness, display }) => {
           <AntDesign name={'closecircle'} size={200} color="red" />
           <Text style={styles.feedBackText}>Wrong Answer</Text>
         </View>
-      )
+      );
     } else if (trueness == TIMEOUT) {
       return (
         <View
@@ -50,10 +52,10 @@ const FeedBackFrame = ({ trueness, display }) => {
           <AntDesign name={'hourglass'} size={200} color="red" />
           <Text style={styles.feedBackText}>Timeout!</Text>
         </View>
-      )
+      );
     }
   } else {
-    return <View></View>
+    return (<View></View>);
   }
 }
 
@@ -66,10 +68,11 @@ const RankedGameScreen = ({navigation, route}) => {
   })
   const [gameStatus, setGameStatus] = useState(true)
   const [numberArray, setNumberArray] = useState([0, 1, 2, 3])
-  const duration = 15
+  const duration = 5
   const [currentTime, setTime] = useState(duration)
   const [currentRound, setCurrentRound] = useState(1)
   const totalRound = 7
+  const [answerGiven, setAnswer] = useState(false)
 
   const restart = () => {
     answeredQuestions = [];
@@ -106,10 +109,11 @@ const RankedGameScreen = ({navigation, route}) => {
 
   const showFeedBack = () => {
     setDisplayFeedback(true)
-    setTimeout(() => {
-      setDisplayFeedback(false)
-    }, 1000)
-    setTimeout(changeQuestion, 1000)
+    // setTimeout(() => {
+    //   setDisplayFeedback(false)
+    // }, 1000)
+    // setTimeout(changeQuestion, 1000)
+    socket.emit("answerGiven");
   }
 
   const handleAnswer = (trueness, timeout) => {
@@ -120,28 +124,92 @@ const RankedGameScreen = ({navigation, route}) => {
     }
     if (timeout) {
       setAnswerStatus(TIMEOUT)
+      setDisplayFeedback(true)
+      setTimeout(() => {
+        setDisplayFeedback(false)
+      }, 1000)
+      // setTimeout(changeQuestion, 1000)
+      return;
     }
-    showFeedBack()
-    setTime(duration)
-    setCurrentRound((currentRound) => currentRound + 1)
+
+    setDisplayFeedback(true)
+
+    setAnswer(true);
+    socket.emit("answerGiven");
   }
 
-  if (currentTime == 0 && gameStatus) {
-    handleAnswer(false, true)
-  }
+  useEffect(() => {
 
-  if(currentRound == totalRound+1 && gameStatus){
-    setGameStatus(false)
-    //TODO add functionality
-    navigation.navigate("RANKED_STATS", {
-      correct: 3, 
-      questionCount: totalRound, 
-      place: 2, 
-      lp: 12, 
-      rank: "GOLD", 
-      points: 26,
+    // let ip=""; // enter the ip on which server operates
+    // let socket = io(`http://${ip}:3000`)
+
+    // setSocket(socket);
+
+    // socket.open();
+
+    // socket.emit("addToQueue");
+
+    // socket.on("serverToClient", (data) => {
+    //   console.log(data);
+    // })
+    //
+    // socket.on('gameFound', (res) => {
+    //   console.log("found the gaaame ", res);
+    //   // navigation.navigate("RANKED_LOADING")
+    // })
+
+    socket.on("bothGiven",  () => {
+      console.log("given: ", socket.id)
+
+
+
+      // setTimeout(() => {
+        setDisplayFeedback(false)
+      // }, 750);
+
+      setAnswer(false)
+
+      changeQuestion()
+      setTime(duration)
+      setCurrentRound((currentRound) => currentRound + 1)
     })
-  }
+
+    // if (currentTime == 0 && gameStatus) {
+    //   setAnswerStatus(TIMEOUT)
+    //   setDisplayFeedback(true)
+    //
+    //   socket.emit("answerGiven")
+    // }
+
+    return(() => {socket.close()})
+  },[]);
+
+
+  useEffect(() => {
+    if (currentTime == 0 && gameStatus && !answerGiven) {
+      setAnswerStatus(TIMEOUT)
+      setDisplayFeedback(true)
+
+      socket.emit("answerGiven")
+
+    }
+  }, [currentTime, gameStatus])
+
+  useEffect(() => {
+    if(currentRound == totalRound+1 && gameStatus){
+      setGameStatus(false)
+      //TODO add functionality
+      navigation.navigate("RANKED_STATS", {
+        correct: 3,
+        questionCount: totalRound,
+        place: 2,
+        lp: 12,
+        rank: "GOLD",
+        points: 26,
+      })
+    }
+  }, [currentRound, gameStatus])
+
 
   return (
     <View style={styles.frame}>
