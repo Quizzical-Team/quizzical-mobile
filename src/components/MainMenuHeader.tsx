@@ -39,11 +39,11 @@ const MainMenuHeader = ({ navigation }) => {
     <View style={styles.headerTop}>
       <LinearGradient colors={['#fcbe03', '#fc7f03', "#fc4e03"]} style={styles.header}>
         <Pressable style={styles.menu} onPress={drawerHandler}>
-          <AntDesign name="menufold" size={36} color="white" />
+          <AntDesign name="menufold" size={36} color="black" />
         </Pressable>
         <View style={styles.userInfo}>
           <Image source={{ uri: user.picture }} style={styles.profile} />
-          <Text style={styles.username}>{user.name}</Text>
+          <Text style={styles.username}>{"malialtunsoy"}</Text>
         </View>
       </LinearGradient>
     </View>
@@ -54,9 +54,9 @@ const styles = StyleSheet.create({
   headerTop: {
     flex: 1,
     width: '100%',
-    borderBottomEndRadius: 20,
+    borderBottomEndRadius: 30,
     overflow: "hidden",
-    borderBottomWidth: 3,
+    borderBottomWidth: 2,
     borderColor: "black"
   },header: {
     flex: 1,
@@ -64,26 +64,28 @@ const styles = StyleSheet.create({
   },
   menu: {
     position: 'absolute',
-    top: 37,
+    top: 30,
     left: 30
   },
   userInfo: {
     flex: 1,
     alignContent: 'center',
     alignItems: 'center',
-    flexDirection: 'row-reverse'
+    flexDirection: 'row-reverse',
   },
   username: {
-    color: 'white',
-    fontSize: 20
+    color: 'black',
+    fontSize: 20,
+    fontWeight: "bold",
   },
   profile: {
-    height: 60,
-    width: 60,
+    height: 50,
+    width: 50,
     borderWidth: 3,
-    borderColor: 'white',
+    borderColor: 'black',
     borderRadius: 60,
-    marginHorizontal: 20
+    marginHorizontal: 10,
+    marginRight: 35,
   }
 })
 

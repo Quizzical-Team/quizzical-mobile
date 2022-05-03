@@ -46,6 +46,7 @@ const styles = StyleSheet.create({
         alignItems: "center",
     },
     title: {
+        fontSize: 20,
         fontWeight: "bold",
         paddingTop: 10,
 

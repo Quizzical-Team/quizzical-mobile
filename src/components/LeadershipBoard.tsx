@@ -102,11 +102,11 @@ const LeadershipBoard = () => {
 const styles = StyleSheet.create({
   frame: {
     backgroundColor: 'white',
-    width: '81%',
+    width: '82%',
     height: '55%',
     borderRadius: 16,
     alignItems: 'center',
-    overflow: 'scroll'
+    overflow: 'scroll',
   },
   picture: {
     height: 30,
