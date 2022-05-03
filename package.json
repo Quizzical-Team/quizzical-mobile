@@ -31,7 +31,8 @@
     "react-native-svg": "^12.1.1",
     "react-native-web": "0.17.1",
     "react-navigation-drawer": "react-navigation/drawer",
-    "socket.io-client": "^4.5.0"
+    "socket.io-client": "^4.5.0",
+    "validator": "^13.7.0"
   },
   "devDependencies": {
     "@babel/core": "^7.12.9",

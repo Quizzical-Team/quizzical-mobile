@@ -1,16 +1,15 @@
 import React, { useState } from 'react'
-import { View, Text, StyleSheet } from 'react-native'
+import { View, Text, StyleSheet, AsyncStorage, Pressable } from 'react-native'
 import CategoryBoard from '../components/CategoryBoard'
 import MainMenuHeader from '../components/MainMenuHeader'
-import { createDrawerNavigator } from '@react-navigation/drawer'
+import { createDrawerNavigator, DrawerContentScrollView, DrawerItem, DrawerItemList } from '@react-navigation/drawer'
 import { NavigationContainer } from '@react-navigation/native'
 import 'react-native-gesture-handler'
+import { Button, Stack } from 'native-base'
 
 const styles = require('../style')
 
 const Drawer = createDrawerNavigator()
-
-
 
 const Profile = ({ navigation }) => {
   return (
@@ -23,20 +22,30 @@ const Profile = ({ navigation }) => {
 }
 
 const Friends = ({ navigation }) => {
-    return (
-        <View style={styles.mainFrame}>
-          <View style={styles.headerPanel}>
-            <MainMenuHeader navigation={navigation} />
-          </View>
+  return (
+      <View style={styles.mainFrame}>
+        <View style={styles.headerPanel}>
+          <MainMenuHeader navigation={navigation} />
         </View>
-    )
-  }
+      </View>
+  )
+}
 
 const Contribute = ({ navigation }) => {
   return (
       <View style={styles.mainFrame}>
         <View style={styles.headerPanel}>
           <MainMenuHeader navigation={navigation} />
+        </View>
+      </View>
+  )
+}
+
+const Logout = ({ navigation }) => {
+  return (
+      <View style={styles.mainFrame}>
+        <View style={styles.headerPanel}>
+          <MainMenuHeader navigation={mainNavigation} />
         </View>
       </View>
   )
@@ -58,16 +67,24 @@ const MainMenuScreen = ({ navigation }) => {
       }
   return (
     <NavigationContainer independent={true}>
-      <Drawer.Navigator
+      <Drawer.Navigator initialRouteName="Home" 
         screenOptions={{
-          headerShown: false
+          headerShown: false,
         }}
-        initialRouteName="Home"
-      >
-        <Drawer.Screen name="Home" component={HomeMenu}/>
-        <Drawer.Screen name="Profile" component={Profile} />
-        <Drawer.Screen name="Friends" component={Friends} />
-        <Drawer.Screen name="Contribute" component={Contribute} />
+        drawerContent={props => {
+          return (
+            <DrawerContentScrollView {...props}>
+              <DrawerItemList {...props} />
+              <DrawerItem
+                label="Logout"
+                onPress={() => mainNavigation.navigate("LOGIN")} />
+            </DrawerContentScrollView>
+          )
+        }}>
+          <Drawer.Screen name="Home" component={HomeMenu}/>
+          <Drawer.Screen name="Profile" component={Profile} />
+          <Drawer.Screen name="Friends" component={Friends} />
+          <Drawer.Screen name="Contribute" component={Contribute} />
       </Drawer.Navigator>
     </NavigationContainer>
   )

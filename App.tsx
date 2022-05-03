@@ -24,10 +24,24 @@ export default function App() {
             animation: "fade",
           }}
         >
-          
-          <Stack.Screen name="MAINMENU" component={MainMenuScreen} />
-          <Stack.Screen name="SPEEDRUN" component={SpeedRunScreen} />
-          <Stack.Screen name="RANKED" component={RankedScreen} />
+          <Stack.Screen
+            name="LOGIN"
+            component={LoginScreen} />
+          <Stack.Screen
+            name="REGISTER"
+            component={RegisterScreen} />
+          <Stack.Screen
+            name="FORGOTPASSWORD"
+            component={ForgotPasswordScreen} />
+          <Stack.Screen
+            name="MAINMENU"
+            component={MainMenuScreen} />
+          <Stack.Screen
+            name="SPEEDRUN"
+            component={SpeedRunScreen} />
+          <Stack.Screen
+            name="RANKED"
+            component={RankedScreen} />
         </Stack.Navigator>
       </NavigationContainer>
     </>

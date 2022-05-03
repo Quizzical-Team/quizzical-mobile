@@ -5,51 +5,57 @@ import {
   TextInput,
   Button,
   StyleSheet,
-  Pressable
+  Pressable,
+  Alert
 } from 'react-native'
 import LoginScreenButton from '../components/LoginScreenButton'
 import { LinearGradient } from 'expo-linear-gradient'
 import { AntDesign } from '@expo/vector-icons'
+import { registerWithUsernameEmailPassword } from '../services/userService'
 
 const styles = require('../style')
 
+const validator = require('validator')
+
 const RegisterScreen = ({ navigation }) => {
   const [email, setEmail] = useState('')
+  const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [warningOpacity, setWarningOpacity] = useState(0)
-  const [warningMessage, setWarningMessage] = useState(
-    'Register information invalid.'
-  )
 
-  const register = () => {
-    //REGISTER
-    return true
-  }
-
-  const signup = () => {
-    //console.log('SIGN UP')
-    if (register()) {
-      //GO TO MAIN MENU
-      navigation.navigate('MAINMENU')
+  function onSignupButtonPress() {
+    if (validator.isEmail(email)) {
+      registerWithUsernameEmailPassword(username, email, password).then((response) => {
+        if (response) {
+          setWarningOpacity(0)
+          navigation.navigate('LOGIN')
+        } else
+          setWarningOpacity(1)
+      })   
     } else {
+      setWarningOpacity(1)
     }
   }
 
-  const emailHandler = (loginEmail) => {
-    setEmail(loginEmail)
+  const onEmailChange = (_email: string) => {
+    setEmail(_email.trim())
   }
 
-  const passwordHandler = (loginPassword) => {
-    setPassword(loginPassword)
+  const onUsernameChange = (_username: string) => {
+    setUsername(_username.trim())
   }
 
-  const goBack = () => {
+  const onPasswordChange = (_password: string) => {
+    setPassword(_password.trim())
+  }
+
+  const onGoBackButtonPress = () => {
     navigation.navigate('LOGIN')
   }
 
   return (
     <LinearGradient colors={['#EE6565', '#FFF2AC']} style={styles.mainScreen}>
-      <Pressable style={styles.back} onPress={goBack}>
+      <Pressable style={styles.back} onPress={onGoBackButtonPress}>
         <AntDesign name="back" size={36} color="black" />
       </Pressable>
       <Text style={styles.loginText}>REGISTER</Text>
@@ -58,20 +64,25 @@ const RegisterScreen = ({ navigation }) => {
         placeholder="Email"
         keyboardType="email-address"
         autoCapitalize="none"
-        onChangeText={emailHandler}
-      ></TextInput>
+        onChangeText={onEmailChange}
+        />
+      <TextInput
+        style={styles.inputs}
+        placeholder="Username"
+        keyboardType="default"
+        autoCapitalize="none"
+        onChangeText={onUsernameChange}
+        />
       <TextInput
         style={styles.inputs}
         secureTextEntry={true}
         placeholder="Password"
-        onChangeText={passwordHandler}
-      ></TextInput>
+        onChangeText={onPasswordChange}
+        />
       <Text style={[styles.warning, { opacity: warningOpacity }]}>
-        {warningMessage}
+        This user already exists
       </Text>
-      <LoginScreenButton style={styles.signUpButton} press={signup}>
-        SIGN UP
-      </LoginScreenButton>
+      <LoginScreenButton style={styles.signUpButton} onPress={onSignupButtonPress} text="SIGN UP" />
     </LinearGradient>
   )
 }

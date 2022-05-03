@@ -1,9 +1,27 @@
-import React from 'react'
-import { View, StyleSheet, Pressable, Text, Image } from 'react-native'
+import React, { useEffect, useLayoutEffect, useState } from 'react'
+import { View, StyleSheet, Pressable, Text, Image, AsyncStorage } from 'react-native'
 import { AntDesign } from '@expo/vector-icons'
-import { loggedInUser } from '../data/authentication'
 
 const MainMenuHeader = ({navigation}) => {
+  const [user, setUser] = useState({})
+
+  useEffect(() => {
+    console.log('mount');
+  
+    AsyncStorage.multiGet(['id', 'username']).then((get) => {
+      var obj = {};
+      get.forEach(element => {
+        obj[element[0]] = element[1]
+      });
+      console.log(obj);
+      
+
+      setUser({
+        name: obj.username,
+        picture: `https://cdn.discordapp.com/embed/avatars/${parseInt(obj.id)%6}.png`
+      })
+    })
+  }, [])  
 
   const drawerHandler = () => {
       navigation.openDrawer();
@@ -14,9 +32,9 @@ const MainMenuHeader = ({navigation}) => {
         <AntDesign name="menufold" size={36} color="white" />
       </Pressable>
       <View style={styles.userInfo}>
-      <Image source={{uri: loggedInUser.picture}}
+      <Image source={{uri: user.picture}}
        style={styles.profile} />
-      <Text style={styles.username}>{loggedInUser.name}</Text>
+      <Text style={styles.username}>{user.name}</Text>
       </View>
       
     </View>

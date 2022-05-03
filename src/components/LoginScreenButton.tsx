@@ -1,14 +1,14 @@
 import { View, Text, StyleSheet, Pressable } from 'react-native'
 
-const LoginScreenButton = ({ children, style, press }) => {
+const LoginScreenButton = ({ style, onPress, text}) => {
   return (
     <View style={style}>
       <Pressable
         style={styles.buttonInner}
-        onPress={press}
+        onPress={onPress}
         android_ripple={{ color: 'white' }}
       >
-        <Text style={styles.text}>{children}</Text>
+        <Text style={styles.text}>{text}</Text>
       </Pressable>
     </View>
   )
