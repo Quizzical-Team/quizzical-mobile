@@ -72,7 +72,7 @@ const RankedGameScreen = ({navigation, route}) => {
   const [currentTime, setTime] = useState(duration)
   const [currentRound, setCurrentRound] = useState(1)
   const totalRound = 7
-  const [answerGiven, serAnswer] = useState(false)
+  const [answerGiven, setAnswer] = useState(false)
 
   const restart = () => {
     answeredQuestions = [];
@@ -134,7 +134,7 @@ const RankedGameScreen = ({navigation, route}) => {
 
     setDisplayFeedback(true)
 
-    serAnswer(true);
+    setAnswer(true);
     socket.emit("answerGiven");
   }
 
@@ -158,17 +158,18 @@ const RankedGameScreen = ({navigation, route}) => {
     //   // navigation.navigate("RANKED_LOADING")
     // })
 
-    socket.on("bothGiven", () => {
+    socket.on("bothGiven",  () => {
       console.log("given: ", socket.id)
 
 
 
       // setTimeout(() => {
         setDisplayFeedback(false)
-      // }, 500)
-      serAnswer(false)
+      // }, 750);
 
-      changeQuestion();
+      setAnswer(false)
+
+      changeQuestion()
       setTime(duration)
       setCurrentRound((currentRound) => currentRound + 1)
     })
