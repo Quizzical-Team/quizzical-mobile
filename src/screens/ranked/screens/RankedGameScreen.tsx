@@ -72,7 +72,7 @@ const RankedGameScreen = ({navigation, route}) => {
   const [currentTime, setTime] = useState(duration)
   const [currentRound, setCurrentRound] = useState(1)
   const totalRound = 7
-  // const [socket, setSocket] = useState(io(""));
+  const [answerGiven, serAnswer] = useState(false)
 
   const restart = () => {
     answeredQuestions = [];
@@ -133,6 +133,8 @@ const RankedGameScreen = ({navigation, route}) => {
     }
 
     setDisplayFeedback(true)
+
+    serAnswer(true);
     socket.emit("answerGiven");
   }
 
@@ -159,9 +161,12 @@ const RankedGameScreen = ({navigation, route}) => {
     socket.on("bothGiven", () => {
       console.log("given: ", socket.id)
 
+
+
       // setTimeout(() => {
         setDisplayFeedback(false)
       // }, 500)
+      serAnswer(false)
 
       changeQuestion();
       setTime(duration)
@@ -180,13 +185,14 @@ const RankedGameScreen = ({navigation, route}) => {
 
 
   useEffect(() => {
-    if (currentTime == 0 && gameStatus) {
+    if (currentTime == 0 && gameStatus && !answerGiven) {
       setAnswerStatus(TIMEOUT)
       setDisplayFeedback(true)
 
       socket.emit("answerGiven")
+
     }
-  }, [currentTime])
+  }, [currentTime, gameStatus])
 
   useEffect(() => {
     if(currentRound == totalRound+1 && gameStatus){
@@ -201,7 +207,7 @@ const RankedGameScreen = ({navigation, route}) => {
         points: 26,
       })
     }
-  }, [currentRound])
+  }, [currentRound, gameStatus])
 
 
   return (
