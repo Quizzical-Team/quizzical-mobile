@@ -18,17 +18,13 @@ export default function App() {
     <>
       <StatusBar style="auto" hidden/>
       <NavigationContainer>
-        <Stack.Navigator
+        <Stack.Navigator 
           screenOptions={{
-            headerShown: false
+            headerShown: false,
+            animation: "fade",
           }}
         >
-          <Stack.Screen name="LOGIN" component={LoginScreen} />
-          <Stack.Screen name="REGISTER" component={RegisterScreen} />
-          <Stack.Screen
-            name="FORGOTPASSWORD"
-            component={ForgotPasswordScreen}
-          />
+          
           <Stack.Screen name="MAINMENU" component={MainMenuScreen} />
           <Stack.Screen name="SPEEDRUN" component={SpeedRunScreen} />
           <Stack.Screen name="RANKED" component={RankedScreen} />

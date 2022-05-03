@@ -27,6 +27,7 @@ const SpeedRunQuizPanel = ({
   setCorrectAnswers,
   incorrectAnswers,
   setInCorrectAnswers,
+  timeLeft,
 }) => {
   const [currentQuestion, setQuestion] = useState({ question: '', answers: [] })
   const [gameStarted, setGameStarted] =  useState(false)
@@ -48,12 +49,12 @@ const SpeedRunQuizPanel = ({
       )
     }
     //console.log(answeredQuestions)
-    if (questions.length == answeredQuestions.length) {
+    if (questions.length == answeredQuestions.length || incorrectAnswers >= 2) {
       gameIsOver()
       answeredQuestions = []
       navigation.navigate('SPEEDRUN_STATS', {
         correct: correctAnswers,
-        time: time
+        time: timeLeft
       })
     } else {
       setQuestion(getUnansweredQuestion)

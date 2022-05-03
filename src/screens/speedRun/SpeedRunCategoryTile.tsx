@@ -1,8 +1,9 @@
+import { AntDesign } from "@expo/vector-icons";
 import { background } from "native-base/lib/typescript/theme/styled-system";
 import React from "react";
 import { View, Pressable, Text, StyleSheet } from "react-native";
 
-const SpeedRunCategoryTile = ({title, color, componentName, navigation}) => {
+const SpeedRunCategoryTile = ({title, color, componentName, navigation, icon}) => {
 
     const handleComponentPress = (title) => {
        navigation.navigate("SPEEDRUN_DURATIONPICK", {category: title});
@@ -13,6 +14,7 @@ const SpeedRunCategoryTile = ({title, color, componentName, navigation}) => {
         <View style={[styles.gridItem, {backgroundColor: color}]}>
             <Pressable android_ripple={{color: "#ccc"}} style={styles.button} onPress={() => handleComponentPress(title)}>
                 <View style={styles.innerContainer}>
+                    <AntDesign name={icon} size={55} color="black" />
                     <Text style={styles.title}>{title}</Text>
                 </View>
             </Pressable>
@@ -43,6 +45,7 @@ const styles = StyleSheet.create({
         alignItems: "center",
     },
     title: {
+        marginTop: 10,
         fontWeight: "bold",
 
     }

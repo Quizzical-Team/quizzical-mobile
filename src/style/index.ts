@@ -14,10 +14,10 @@ module.exports = StyleSheet.create({
     height: '15%',
     marginBottom: 30
   },
-  catagoryPanel: {
+  categoryPanel: {
     justifyContent: 'center',
     alignItems: 'center',
-    alignContent: 'center'
+    alignContent: 'center',
   },
   drawer: {
     backgroundColor: '#333E63'

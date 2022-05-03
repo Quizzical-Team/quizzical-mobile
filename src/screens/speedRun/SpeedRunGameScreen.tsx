@@ -5,12 +5,15 @@ import SpeedRunQuizPanel from './SpeedRunQuizPanel'
 
 const SpeedRunGameScreen = ({ navigation, route }) => {
   const { duration, category } = route.params
+  const [timeLeft, setTimeLeft] = useState(duration)
   const [gameStatus, setGameStatus] = useState(true)
   const [correctAnswers, setCorrectAnswers] = useState(0)
   const [incorrectAnswers, setInCorrectAnswers] = useState(0)
   const gameIsOver = () => {
     setGameStatus(false)
   }
+
+
   //console.log(duration)
   //console.log(category)
   return (
@@ -22,6 +25,7 @@ const SpeedRunGameScreen = ({ navigation, route }) => {
         gameIsOver={gameIsOver}
         correctAnswers={correctAnswers}
         incorrectAnswers={incorrectAnswers}
+        setTimeLeft = {setTimeLeft}
       />
       <SpeedRunQuizPanel
         navigation={navigation}
@@ -32,6 +36,7 @@ const SpeedRunGameScreen = ({ navigation, route }) => {
         incorrectAnswers={incorrectAnswers}
         setCorrectAnswers={setCorrectAnswers}
         setInCorrectAnswers={setInCorrectAnswers}
+        timeLeft={timeLeft}
       />
     </View>
   )

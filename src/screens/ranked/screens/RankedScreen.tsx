@@ -62,7 +62,8 @@ const RankedScreen = ({ navigation }) => {
     <NavigationContainer independent={true}>
       <Stack.Navigator
         screenOptions={{
-          headerShown: false
+          headerShown: false,
+          animation: "slide_from_right"
         }}
       >
         <Stack.Screen name="RANKED_START" component={RankedFrame} initialParams={{goHome:false}}/>

@@ -38,13 +38,11 @@ const SpeedRunDurationPick = ({navigation, route}) => {
         </Pressable>
         <Text style={styles.title}>Pick a Duration</Text>
       </View>
-      <Text style={styles.time}>
-          {currentDuration} Seconds
-      </Text>
       <View style={styles.categoryPanel}>
         <DurationButton time={30}/>
         <DurationButton time={45}/>
         <DurationButton time={60}/>
+        <DurationButton time={120}/>
       </View>
     </View>
   )
@@ -104,7 +102,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     alignItems: 'center',
     alignContent: 'center',
-    marginTop: 20,
+    marginTop: 30,
   }
 })
 
