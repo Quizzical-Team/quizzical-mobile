@@ -72,23 +72,18 @@ const RankedGameScreen = ({navigation, route}) => {
     questionIndex: 0,
     question: route.params.questions[0].questionText,
     answers: [
-      route.params.questions[0].correctAnswer,
-      route.params.questions[0].distractor1,
-      route.params.questions[0].distractor2,
-      route.params.questions[0].distractor3,
+      { answer: route.params.questions[0].correctAnswer, isTrue: true },
+      { answer: route.params.questions[0].distractor1, isTrue: false },
+      { answer: route.params.questions[0].distractor2, isTrue: false },
+      { answer: route.params.questions[0].distractor3, isTrue: false },
     ]
   })
 
   const shuffle = (answers: Array<any>) => {
-    const newNumberArray = [...question.numberArray]
     const newAnswersArray = [...answers]
 
     for (let i = 0; i < question.answers.length; i++) {
       const newIndex = Math.floor(Math.random() * question.answers.length)
-      // swap with new index
-      const temp = newNumberArray[newIndex]
-      newNumberArray[newIndex] = newNumberArray[i]
-      newNumberArray[i] = temp
 
       const tempAnswer = newAnswersArray[newIndex]
       newAnswersArray[newIndex] = newAnswersArray[i]
@@ -96,14 +91,10 @@ const RankedGameScreen = ({navigation, route}) => {
     }
 
     // console.log(question.numberArray)
-    console.log(newNumberArray)
     console.log(answers)
     console.log(newAnswersArray)
 
-    return {
-      numberArray: [ ...newNumberArray ],
-      answers: [ ...newAnswersArray ]
-    }
+    return [ ...newAnswersArray ]
   }
 
   const handleAnswer = (trueness: boolean, timeout: boolean) => {
@@ -128,14 +119,15 @@ const RankedGameScreen = ({navigation, route}) => {
     socket.emit("answerGiven");
   }
   const test = () => {
-
+    // @ts-ignore
     setQuestion((prevQuestion) => ({
-      ...shuffle([
-                questions[prevQuestion.questionIndex + 1].correctAnswer,
-                questions[prevQuestion.questionIndex + 1].distractor1,
-                questions[prevQuestion.questionIndex + 1].distractor2,
-                questions[prevQuestion.questionIndex + 1].distractor3,
-      ]),
+      answers: shuffle(
+          [
+            { answer: questions[prevQuestion.questionIndex + 1].correctAnswer, isTrue: true},
+            { answer: questions[prevQuestion.questionIndex + 1].distractor1, isTrue: false },
+            { answer: questions[prevQuestion.questionIndex + 1].distractor2, isTrue: false },
+            { answer: questions[prevQuestion.questionIndex + 1].distractor3, isTrue: false },
+          ]),
 
       questionIndex: prevQuestion.questionIndex + 1,
       question: questions[prevQuestion.questionIndex + 1].questionText,
