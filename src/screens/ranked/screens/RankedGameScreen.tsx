@@ -57,6 +57,8 @@ const FeedBackFrame = ({ trueness, display }) => {
 const RankedGameScreen = ({navigation, route}) => {
   const totalRound = 4
   const duration = 5
+  const [correctCount, setCorrectCount] = useState(0)
+  const [points, setPoints] = useState(0)
 
   const [displayFeedBack, setDisplayFeedback] = useState(false)
   const [answerStatus, setAnswerStatus] = useState(INCORRECT)
@@ -91,14 +93,16 @@ const RankedGameScreen = ({navigation, route}) => {
     }
 
     // console.log(question.numberArray)
-    console.log(answers)
-    console.log(newAnswersArray)
+    // console.log(answers)
+    // console.log(newAnswersArray)
 
     return [ ...newAnswersArray ]
   }
 
   const handleAnswer = (trueness: boolean, timeout: boolean) => {
     if (trueness) {
+      setCorrectCount((correctCount) => correctCount + 1);
+      setPoints((points) => points + (2 * currentTime));
       setAnswerStatus(CORRECT)
     } else {
       setAnswerStatus(INCORRECT)
@@ -118,6 +122,28 @@ const RankedGameScreen = ({navigation, route}) => {
     setIsAnswerGiven(true);
     socket.emit("answerGiven");
   }
+
+  useEffect(() => {
+    // correctCount = 0;
+    setCorrectCount(0);
+    setPoints(0);
+
+    // @ts-ignore
+    setQuestion((prevQuestion) => ({
+      answers: shuffle(
+          [
+            { answer: `questions[prevQuestion.questionIndex + 1].correctAnswer`, isTrue: true},
+            { answer: questions[prevQuestion.questionIndex + 1].distractor1, isTrue: false },
+            { answer: questions[prevQuestion.questionIndex + 1].distractor2, isTrue: false },
+            { answer: questions[prevQuestion.questionIndex + 1].distractor3, isTrue: false },
+          ]),
+
+      questionIndex: prevQuestion.questionIndex + 1,
+      question: questions[prevQuestion.questionIndex + 1].questionText,
+    }))
+
+  }, []);
+
   const test = () => {
     // @ts-ignore
     setQuestion((prevQuestion) => ({
@@ -155,6 +181,7 @@ const RankedGameScreen = ({navigation, route}) => {
 
   useEffect(() => {
     if (currentTime == 0 && isGameGoingOn && !isAnswerGiven) {
+
       setAnswerStatus(TIMEOUT)
       setDisplayFeedback(true)
 
@@ -163,26 +190,48 @@ const RankedGameScreen = ({navigation, route}) => {
   }, [currentTime, isGameGoingOn])
 
   if (currentRound >= totalRound + 1 && isGameGoingOn) {
+
+    // console.log("correct count: ", correctCount)
     setIsGameGoingOn(false)
     //TODO add functionality
-    navigation.navigate("RANKED_STATS", {
-      correct: 3,
+    socket.emit('endGameStats', {
+      correct: correctCount,
       questionCount: totalRound,
-      place: 2,
-      lp: 12,
-      rank: "GOLD",
-      points: 26,
+      points: points,
+      socketNo: socket.id
     })
+
+    socket.on("winner", (obj) => {
+      let stats = obj.stats;
+
+      stats.forEach((stat, index) => {
+        if(stat.socketNo == socket.id){
+          navigation.navigate("RANKED_STATS", {
+            correct: correctCount,
+            questionCount: totalRound,
+            place: stats.length - index,
+            lp: 12,
+            rank: "GOLD",
+            points: points,
+          })
+        }
+      })
+    })
+
   }
+
+  // useEffect(() => {
+  //
+  //
+  // }, [])
 
   // // yarram bandi coding ¯\_(ツ)_/¯
   // // yoksa array out of bounds yeriz render sirasinda
   // // cunku sonraki soruyu da getlemeye calisiyor
   // // sonraki sayfaya gecmeden hemen once
-  // if (currentRound >= totalRound + 1) {
-  //   return (<View style={styles.frame}/>);
-  // }
-  // ******* currentRound ve isGameGoingOn'lu useEffectin icini renderdan onceye alinca duzeldi gibi
+  if (currentRound >= totalRound + 1) {
+    return (<View style={styles.frame}/>);
+  }
 
   return (
     <View style={styles.frame}>
