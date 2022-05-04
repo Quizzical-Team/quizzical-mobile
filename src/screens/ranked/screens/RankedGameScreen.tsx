@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { View, Text, StyleSheet } from 'react-native'
+import {View, Text, StyleSheet, AsyncStorage} from 'react-native'
 import RankedTimeBar from '../components/RankedTimeBar'
 import RankedQuizPanel from '../components/RankedQuizPanel'
 import { AntDesign } from '@expo/vector-icons'
@@ -68,6 +68,7 @@ const RankedGameScreen = ({navigation, route}) => {
   const [currentRound, setCurrentRound] = useState(1)
   const [isAnswerGiven, setIsAnswerGiven] = useState(false)
   // const [questionIndex, setQuestionIndex] = useState(0)
+  const [user, setUser] = useState("anan");
   const questions = route.params.questions;
   const [question, setQuestion] = useState({
     numberArray: [0,1,2,3],
@@ -123,8 +124,15 @@ const RankedGameScreen = ({navigation, route}) => {
     socket.emit("answerGiven");
   }
 
-  useEffect(() => {
-    // correctCount = 0;
+  // @ts-ignore
+  useEffect(async () => {
+    // @ts-ignore
+    AsyncStorage.getItem('username').then((data) => {
+      console.log("dataaaa: ", data)
+      // @ts-ignore
+      setUser(data)
+    })
+
     setCorrectCount(0);
     setPoints(0);
 
@@ -198,7 +206,8 @@ const RankedGameScreen = ({navigation, route}) => {
       correct: correctCount,
       questionCount: totalRound,
       points: points,
-      socketNo: socket.id
+      socketNo: socket.id,
+      userN: user
     })
 
     socket.on("winner", (obj) => {
