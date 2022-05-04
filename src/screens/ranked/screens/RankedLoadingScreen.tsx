@@ -47,8 +47,16 @@ const RankedLoadingScreen = ({ navigation }) => {
 
     socket.on('gameFound', (res) => {
       console.log("found the gaaame ", res);
+
+      // socket.emit("getQ");
+    })
+
+    socket.on("takeTheQ", (data) => {
+      // console.log(data);
+
       navigation.navigate('RANKED_GAME', {
-        restart: true
+        restart: true,
+        questions: data
       })
     })
   }, [])
