@@ -19,15 +19,7 @@ const LeadershipBoard = () => {
     )
   }
 
-  const renderUserRow = (itemData) => {
-    return (
-      <UserRow
-        username={itemData.item.username}
-        avatar={itemData.item.avatar}
-        score={itemData.item.score}
-      />
-    )
-  }
+
 
   const players = [
     {

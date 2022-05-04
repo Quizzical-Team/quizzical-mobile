@@ -13,6 +13,7 @@ import 'react-native-gesture-handler'
 import { Button, Stack } from 'native-base'
 import LeadershipBoard from '../components/LeadershipBoard'
 import FriendsScreen from './FriendsScreen'
+import ProfileScreen from './ProfileScreen'
 
 const styles = require('../style')
 
@@ -30,6 +31,7 @@ const Profile = ({ navigation }) => {
       <View style={styles.headerPanel}>
         <MainMenuHeader navigation={navigation} />
       </View>
+      <ProfileScreen />
     </View>
   )
 }
