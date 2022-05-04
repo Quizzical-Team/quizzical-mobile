@@ -7,10 +7,6 @@ import { socket, connect } from '../../../server/socket'
 const RankedMatchmakingScreen = ({navigation}) => {
 
   const [progress, setTime] = useState(0.0)
-  const matchmake = () => {
-    //TODO
-    
-  }
 
   if(progress<1){
     setTimeout(()=>{setTime(progress=>progress+0.1)},100)

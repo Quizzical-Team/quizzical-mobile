@@ -1,19 +1,14 @@
 import React, { useEffect, useState } from 'react'
-import { View, Text, StyleSheet, _View } from 'react-native'
+import {View, Text, StyleSheet, AsyncStorage} from 'react-native'
 import RankedTimeBar from '../components/RankedTimeBar'
 import RankedQuizPanel from '../components/RankedQuizPanel'
-import { questions } from '../../../data/Questions'
 import { AntDesign } from '@expo/vector-icons'
 import { useIsFocused } from '@react-navigation/native'
 import {socket} from "../../../server/socket";
-import {io} from "socket.io-client";
 
-let answeredQuestions = []
 const CORRECT = 'CORRECT'
 const INCORRECT = 'INCORRECT'
 const TIMEOUT = 'TIMEOUT'
-let rankedClosed = false
-
 const FeedBackFrame = ({ trueness, display }) => {
   //TODO add current ranking
   if (display) {
@@ -60,79 +55,55 @@ const FeedBackFrame = ({ trueness, display }) => {
 }
 
 const RankedGameScreen = ({navigation, route}) => {
+  const totalRound = 4
+  const duration = 5
+  const [correctCount, setCorrectCount] = useState(0)
+  const [points, setPoints] = useState(0)
+
   const [displayFeedBack, setDisplayFeedback] = useState(false)
   const [answerStatus, setAnswerStatus] = useState(INCORRECT)
-  const [question, setQuestion] = useState({
-    question: '',
-    answers: ['', '', '', '']
-  })
-  const [gameStatus, setGameStatus] = useState(true)
-  const [numberArray, setNumberArray] = useState([0, 1, 2, 3])
-  const duration = 5
+  const [isGameGoingOn, setIsGameGoingOn] = useState(true)
+  // const [numberArray, setNumberArray] = useState([0, 1, 2, 3])
   const [currentTime, setTime] = useState(duration)
   const [currentRound, setCurrentRound] = useState(1)
-  const totalRound = 7
-  const [answerGiven, setAnswer] = useState(false)
-  const [questionIndex, setQuestionIndex] = useState(0)
-  let questions1 = route.params.questions;
+  const [isAnswerGiven, setIsAnswerGiven] = useState(false)
+  // const [questionIndex, setQuestionIndex] = useState(0)
+  const [user, setUser] = useState("anan");
+  const questions = route.params.questions;
+  const [question, setQuestion] = useState({
+    numberArray: [0,1,2,3],
+    questionIndex: 0,
+    question: route.params.questions[0].questionText,
+    answers: [
+      { answer: route.params.questions[0].correctAnswer, isTrue: true },
+      { answer: route.params.questions[0].distractor1, isTrue: false },
+      { answer: route.params.questions[0].distractor2, isTrue: false },
+      { answer: route.params.questions[0].distractor3, isTrue: false },
+    ]
+  })
 
-  const restartTheGame = () => {
-    answeredQuestions = [];
-    setCurrentRound(1);
-    setTime(duration);
-    setGameStatus(true);
-  }
+  const shuffle = (answers: Array<any>) => {
+    const newAnswersArray = [...answers]
 
-  if(!useIsFocused()){
-    rankedClosed = true
-  }
+    for (let i = 0; i < question.answers.length; i++) {
+      const newIndex = Math.floor(Math.random() * question.answers.length)
 
-  if(useIsFocused() && rankedClosed){
-    restartTheGame()
-    rankedClosed = false
-  }
-
-  const changeQuestion = () => {
-    // const getUnansweredQuestion = () => {
-    //   let randomizeIndices = Array.from(Array(questions.length).keys())
-    //   randomizeIndices = randomizeIndices.filter((number) => {
-    //     return !(answeredQuestions.indexOf(number) > -1)
-    //   })
-    //   randomizeIndices = randomizeIndices.sort(() => Math.random() - 0.5)
-    //   answeredQuestions.push(randomizeIndices[0])
-    //   return questions[randomizeIndices[0]]
-    // }
-    //
-    // setNumberArray((numberArray) => numberArray.sort(() => Math.random() - 0.5))
-    // setQuestion(getUnansweredQuestion())
-
-    let quest = {
-      question: questions1[currentRound-1].questionText,
-      answers: [
-          questions1[currentRound-1].correctAnswer,
-          questions1[currentRound-1].distractor1,
-          questions1[currentRound-1].distractor2,
-          questions1[currentRound-1].distractor3
-      ]
+      const tempAnswer = newAnswersArray[newIndex]
+      newAnswersArray[newIndex] = newAnswersArray[i]
+      newAnswersArray[i] = tempAnswer
     }
 
-    console.log(quest, " ", questionIndex);
-    setQuestion(quest)
+    // console.log(question.numberArray)
+    // console.log(answers)
+    // console.log(newAnswersArray)
+
+    return [ ...newAnswersArray ]
   }
 
-  useEffect(changeQuestion, [])
-
-  const showFeedBack = () => {
-    setDisplayFeedback(true)
-    // setTimeout(() => {
-    //   setDisplayFeedback(false)
-    // }, 1000)
-    // setTimeout(changeQuestion, 1000)
-    socket.emit("answerGiven");
-  }
-
-  const handleAnswer = (trueness, timeout) => {
+  const handleAnswer = (trueness: boolean, timeout: boolean) => {
     if (trueness) {
+      setCorrectCount((correctCount) => correctCount + 1);
+      setPoints((points) => points + (2 * currentTime));
       setAnswerStatus(CORRECT)
     } else {
       setAnswerStatus(INCORRECT)
@@ -149,86 +120,127 @@ const RankedGameScreen = ({navigation, route}) => {
 
     setDisplayFeedback(true)
 
-    setAnswer(true);
+    setIsAnswerGiven(true);
     socket.emit("answerGiven");
   }
 
-  useEffect(() => {
-
-    // let ip=""; // enter the ip on which server operates
-    // let socket = io(`http://${ip}:3000`)
-
-    // setSocket(socket);
-
-    // socket.open();
-
-    // socket.emit("addToQueue");
-
-    // socket.on("serverToClient", (data) => {
-    //   console.log(data);
-    // })
-    //
-    // socket.on('gameFound', (res) => {
-    //   console.log("found the gaaame ", res);
-    //   // navigation.navigate("RANKED_LOADING")
-    // })
-
-    // console.log("-----------------------\n", questions1)
-    // console.log("route: ",route);
-    console.log("route.params: ", route.params.questions)
-
-    socket.on("bothGiven",  () => {
-      console.log("given: ", socket.id)
-
-
-      // setTimeout(() => {
-        setDisplayFeedback(false)
-      // }, 750);
-
-      setAnswer(false)
-
-      changeQuestion()
-      setTime(duration)
-      // setQuestionIndex((questionIndex) => questionIndex + 1);
-      setCurrentRound((currentRound: number) => currentRound + 1)
+  // @ts-ignore
+  useEffect(async () => {
+    // @ts-ignore
+    AsyncStorage.getItem('username').then((data) => {
+      console.log("dataaaa: ", data)
+      // @ts-ignore
+      setUser(data)
     })
 
-    // if (currentTime == 0 && gameStatus) {
-    //   setAnswerStatus(TIMEOUT)
-    //   setDisplayFeedback(true)
-    //
-    //   socket.emit("answerGiven")
-    // }
+    setCorrectCount(0);
+    setPoints(0);
+
+    // @ts-ignore
+    setQuestion((prevQuestion) => ({
+      answers: shuffle(
+          [
+            { answer: `questions[prevQuestion.questionIndex + 1].correctAnswer`, isTrue: true},
+            { answer: questions[prevQuestion.questionIndex + 1].distractor1, isTrue: false },
+            { answer: questions[prevQuestion.questionIndex + 1].distractor2, isTrue: false },
+            { answer: questions[prevQuestion.questionIndex + 1].distractor3, isTrue: false },
+          ]),
+
+      questionIndex: prevQuestion.questionIndex + 1,
+      question: questions[prevQuestion.questionIndex + 1].questionText,
+    }))
+
+  }, []);
+
+  const test = () => {
+    // @ts-ignore
+    setQuestion((prevQuestion) => ({
+      answers: shuffle(
+          [
+            { answer: questions[prevQuestion.questionIndex + 1].correctAnswer, isTrue: true},
+            { answer: questions[prevQuestion.questionIndex + 1].distractor1, isTrue: false },
+            { answer: questions[prevQuestion.questionIndex + 1].distractor2, isTrue: false },
+            { answer: questions[prevQuestion.questionIndex + 1].distractor3, isTrue: false },
+          ]),
+
+      questionIndex: prevQuestion.questionIndex + 1,
+      question: questions[prevQuestion.questionIndex + 1].questionText,
+    }))
+
+    console.log("given: ", socket.id)
+
+    // * cleanup and iteration before next round
+    // setTimeout(() => {
+    setDisplayFeedback(false)
+    // }, 750);
+
+    setIsAnswerGiven(false)
+
+    setTime(duration)
+    setCurrentRound((currentRound: number) => currentRound + 1)
+    // console.log('NEXXXT', currentRound)
+  }
+  // * [HOOKS]
+  useEffect(() => {
+    socket.on("bothGiven", test)
 
     return(() => {socket.close()})
   },[]);
 
-
   useEffect(() => {
-    if (currentTime == 0 && gameStatus && !answerGiven) {
+    if (currentTime == 0 && isGameGoingOn && !isAnswerGiven) {
+
       setAnswerStatus(TIMEOUT)
       setDisplayFeedback(true)
 
       socket.emit("answerGiven")
-
     }
-  }, [currentTime, gameStatus])
+  }, [currentTime, isGameGoingOn])
 
-  useEffect(() => {
-    if(currentRound === totalRound + 1 && gameStatus){
-      setGameStatus(false)
-      //TODO add functionality
-      navigation.navigate("RANKED_STATS", {
-        correct: 3,
-        questionCount: totalRound,
-        place: 2,
-        lp: 12,
-        rank: "GOLD",
-        points: 26,
+  if (currentRound >= totalRound + 1 && isGameGoingOn) {
+
+    // console.log("correct count: ", correctCount)
+    setIsGameGoingOn(false)
+    //TODO add functionality
+    socket.emit('endGameStats', {
+      correct: correctCount,
+      questionCount: totalRound,
+      points: points,
+      socketNo: socket.id,
+      userN: user
+    })
+
+    socket.on("winner", (obj) => {
+      let stats = obj.stats;
+
+      stats.forEach((stat, index) => {
+        if(stat.socketNo == socket.id){
+          navigation.navigate("RANKED_STATS", {
+            correct: correctCount,
+            questionCount: totalRound,
+            place: stats.length - index,
+            lp: 12,
+            rank: "GOLD",
+            points: points,
+          })
+        }
       })
-    }
-  }, [currentRound, gameStatus])
+    })
 
+  }
+
+  // useEffect(() => {
+  //
+  //
+  // }, [])
+
+  // // yarram bandi coding ¯\_(ツ)_/¯
+  // // yoksa array out of bounds yeriz render sirasinda
+  // // cunku sonraki soruyu da getlemeye calisiyor
+  // // sonraki sayfaya gecmeden hemen once
+  if (currentRound >= totalRound + 1) {
+    return (<View style={styles.frame}/>);
+  }
 
   return (
     <View style={styles.frame}>
@@ -237,15 +249,15 @@ const RankedGameScreen = ({navigation, route}) => {
         currentTime={currentTime}
         setTime={setTime}
         duration={duration}
-        gameStatus={gameStatus}
+        gameStatus={isGameGoingOn}
       />
       <Text style={styles.roundCount}>
         {currentRound}/{totalRound}
       </Text>
       <RankedQuizPanel
-        question={question}
-        handleAnswer={handleAnswer}
-        numberArray={numberArray}
+          question={question}
+          handleAnswer={handleAnswer}
+          numberArray={question.numberArray}
       />
     </View>
   )
