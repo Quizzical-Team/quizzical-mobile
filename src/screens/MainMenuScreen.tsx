@@ -12,6 +12,7 @@ import { NavigationContainer } from '@react-navigation/native'
 import 'react-native-gesture-handler'
 import { Button, Stack } from 'native-base'
 import LeadershipBoard from '../components/LeadershipBoard'
+import FriendsScreen from './FriendsScreen'
 
 const styles = require('../style')
 
@@ -39,6 +40,7 @@ const Friends = ({ navigation }) => {
       <View style={styles.headerPanel}>
         <MainMenuHeader navigation={navigation} />
       </View>
+      <FriendsScreen />
     </View>
   )
 }
