@@ -11,6 +11,8 @@ import RankedScreen from './src/screens/ranked/screens/RankedScreen'
 import React from 'react'
 import StreakScreen from './src/screens/streak/screens/StreakScreen'
 import OneOOneScreen from './src/screens/one-o-one/screens/OneOOneScreen'
+import { LogBox } from 'react-native';
+LogBox.ignoreAllLogs();//Hide all warning notifications on front-end
 
 const Stack = createNativeStackNavigator()
 export default function App() {
@@ -22,6 +24,7 @@ export default function App() {
           screenOptions={{
             headerShown: false,
             animation: "fade",
+            gestureEnabled: false
           }}
         >
           <Stack.Screen

@@ -63,7 +63,8 @@ const RankedScreen = ({ navigation }) => {
       <Stack.Navigator
         screenOptions={{
           headerShown: false,
-          animation: "slide_from_right"
+          animation: "slide_from_right",
+          gestureEnabled: false
         }}
       >
         <Stack.Screen name="RANKED_START" component={RankedFrame} initialParams={{goHome:false}}/>

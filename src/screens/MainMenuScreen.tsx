@@ -12,6 +12,8 @@ import { NavigationContainer } from '@react-navigation/native'
 import 'react-native-gesture-handler'
 import { Button, Stack } from 'native-base'
 import LeadershipBoard from '../components/LeadershipBoard'
+import FriendsScreen from './FriendsScreen'
+import ProfileScreen from './ProfileScreen'
 
 const styles = require('../style')
 
@@ -29,6 +31,7 @@ const Profile = ({ navigation }) => {
       <View style={styles.headerPanel}>
         <MainMenuHeader navigation={navigation} />
       </View>
+      <ProfileScreen />
     </View>
   )
 }
@@ -39,6 +42,7 @@ const Friends = ({ navigation }) => {
       <View style={styles.headerPanel}>
         <MainMenuHeader navigation={navigation} />
       </View>
+      <FriendsScreen />
     </View>
   )
 }
@@ -85,16 +89,24 @@ const MainMenuScreen = ({ navigation }) => {
       <Drawer.Navigator
         initialRouteName="Home"
         screenOptions={{
-          headerShown: false
+          headerShown: false,
+          drawerActiveTintColor: '#d9bde3', drawerInactiveTintColor: '#f0f0f0'
         }}
+
         drawerContent={(props) => {
           return (
-            <DrawerContentScrollView {...props}>
+            <DrawerContentScrollView style={{
+                backgroundColor: '#303030',
+                borderRightColor: '#202020',
+            }} {...props}>
               <DrawerItemList {...props} />
               <DrawerItem
                 label="Logout"
                 onPress={async () => {
                   await onLogoutPress(mainNavigation)
+                }}
+                style={{
+                   backgroundColor: '#fe6d6a'
                 }}
               />
             </DrawerContentScrollView>

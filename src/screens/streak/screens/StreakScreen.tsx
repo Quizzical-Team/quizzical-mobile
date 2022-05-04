@@ -58,7 +58,8 @@ const StreakScreen = ({ navigation }) => {
       <Stack.Navigator
         screenOptions={{
           headerShown: false,
-          animation: "slide_from_right"
+          animation: "slide_from_right",
+          gestureEnabled: false
         }}
       >
         <Stack.Screen name="STREAK_START" component={SpeedRunFrame} initialParams={{goHome:false}}/>

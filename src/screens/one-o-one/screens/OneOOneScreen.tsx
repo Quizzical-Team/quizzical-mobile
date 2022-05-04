@@ -63,7 +63,8 @@ const OneOOneScreen = ({ navigation }) => {
       <Stack.Navigator
         screenOptions={{
           headerShown: false,
-          animation: "slide_from_right"
+          animation: "slide_from_right",
+          gestureEnabled: false
         }}
       >
         <Stack.Screen name="ONEOONE_START" component={RankedFrame} initialParams={{goHome:false}}/>

@@ -65,6 +65,8 @@ const OneOOneGameScreen = ({ navigation, route }) => {
     question: '',
     answers: ['', '', '', '']
   })
+  const [yourScore, setYourScore] = useState(0)
+  const [enemyScore, setEnemyScore] = useState(0)
   const [gameStatus, setGameStatus] = useState(true)
   const [numberArray, setNumberArray] = useState([0, 1, 2, 3])
   const duration = 15
@@ -116,6 +118,8 @@ const OneOOneGameScreen = ({ navigation, route }) => {
   const handleAnswer = (trueness, timeout) => {
     if (trueness) {
       setAnswerStatus(CORRECT)
+      const baseScore = 20
+      setYourScore((yourScore)=>yourScore+baseScore+currentTime)
     } else {
       setAnswerStatus(INCORRECT)
     }
@@ -140,7 +144,7 @@ const OneOOneGameScreen = ({ navigation, route }) => {
       place: 2,
       lp: 12,
       rank: 'GOLD',
-      points: 26
+      points: yourScore
     })
   }
 
@@ -165,10 +169,10 @@ const OneOOneGameScreen = ({ navigation, route }) => {
             />
             <Text style={styles.name}>{"YOU"}</Text>
           </View>
-          <Text style={styles.score}>300</Text>
+          <Text style={styles.score}>{yourScore}</Text>
         </View>
         <View style={styles.profile}>
-          <Text style={styles.score}>150</Text>
+          <Text style={styles.score}>{enemyScore}</Text>
           <View style={styles.userInfo}>
             <Image
               source={{ uri: loggedInUser.picture }}
