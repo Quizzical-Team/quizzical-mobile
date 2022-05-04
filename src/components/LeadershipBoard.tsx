@@ -73,7 +73,7 @@ const LeadershipBoard = () => {
   ]
 
   return (
-    <LinearGradient colors={['#b4f4fa', '#789eff']} style={styles.frame}>
+    <LinearGradient colors={['#edd9ff','#edd9ff']} style={styles.frame}>
       <Text style={styles.title}>Leader Board</Text>
       <ScrollView style={styles.list} showsVerticalScrollIndicator={false}>
         {players
