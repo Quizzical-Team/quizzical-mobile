@@ -43,7 +43,7 @@ const MainMenuHeader = ({ navigation }) => {
         </Pressable>
         <View style={styles.userInfo}>
           <Image source={{ uri: user.picture }} style={styles.profile} />
-          <Text style={styles.username}>{"malialtunsoy"}</Text>
+          <Text style={styles.username}>{user.name}</Text>
         </View>
       </LinearGradient>
     </View>

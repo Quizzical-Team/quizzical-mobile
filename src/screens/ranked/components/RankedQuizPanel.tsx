@@ -26,7 +26,7 @@ const RankedQuizPanel = ({question, handleAnswer, numberArray}) => {
 
   const AnswerPanel = ({ answers }) => {
    
-
+    // todo rewrite
     return (
       <View style={styles.answerPanel}>
         <View style={styles.answerRow}>
