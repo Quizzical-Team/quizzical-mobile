@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react'
-import { View, Text, StyleSheet, Image } from 'react-native'
+import {View, Text, StyleSheet, Image, AsyncStorage} from 'react-native'
 import OneOOneTimeBar from '../components/OneOOneTimeBar'
 import OneOOneQuizPanel from '../components/OneOOneQuizPanel'
-import { questions } from '../../../data/Questions'
 import { AntDesign } from '@expo/vector-icons'
 import { useIsFocused } from '@react-navigation/native'
 import { loggedInUser } from '../../../data/authentication'
+import {socket} from "../../../server/socket";
 
 let answeredQuestions = []
 const CORRECT = 'CORRECT'
@@ -61,10 +61,7 @@ const FeedBackFrame = ({ trueness, display }) => {
 const OneOOneGameScreen = ({ navigation, route }) => {
   const [displayFeedBack, setDisplayFeedback] = useState(false)
   const [answerStatus, setAnswerStatus] = useState(INCORRECT)
-  const [question, setQuestion] = useState({
-    question: '',
-    answers: ['', '', '', '']
-  })
+
   const [yourScore, setYourScore] = useState(0)
   const [enemyScore, setEnemyScore] = useState(0)
   const [gameStatus, setGameStatus] = useState(true)
@@ -73,6 +70,24 @@ const OneOOneGameScreen = ({ navigation, route }) => {
   const [currentTime, setTime] = useState(duration)
   const [currentRound, setCurrentRound] = useState(1)
   const totalRound = 7
+
+  const [isAnswerGiven, setIsAnswerGiven] = useState(false)
+  const [correctCount, setCorrectCount] = useState(0)
+  const [points, setPoints] = useState(0)
+  const [isGameGoingOn, setIsGameGoingOn] = useState(true)
+  const [user, setUser] = useState("null");
+  const questions = route.params.questions;
+  const [question, setQuestion] = useState({
+    numberArray: [0,1,2,3],
+    questionIndex: 0,
+    question: route.params.questions[0].questionText,
+    answers: [
+      { answer: route.params.questions[0].correctAnswer, isTrue: true },
+      { answer: route.params.questions[0].distractor1, isTrue: false },
+      { answer: route.params.questions[0].distractor2, isTrue: false },
+      { answer: route.params.questions[0].distractor3, isTrue: false },
+    ]
+  })
 
   const restart = () => {
     answeredQuestions = []
@@ -90,62 +105,155 @@ const OneOOneGameScreen = ({ navigation, route }) => {
     rankedClosed = false
   }
 
-  const changeQuestion = () => {
-    const getUnansweredQuestion = () => {
-      let randomizeIndices = Array.from(Array(questions.length).keys())
-      randomizeIndices = randomizeIndices.filter((number) => {
-        return !(answeredQuestions.indexOf(number) > -1)
-      })
-      randomizeIndices = randomizeIndices.sort(() => Math.random() - 0.5)
-      answeredQuestions.push(randomizeIndices[0])
-      return questions[randomizeIndices[0]]
+  const shuffle = (answers: Array<any>) => {
+    const newAnswersArray = [...answers]
+
+    for (let i = 0; i < question.answers.length; i++) {
+      const newIndex = Math.floor(Math.random() * question.answers.length)
+
+      const tempAnswer = newAnswersArray[newIndex]
+      newAnswersArray[newIndex] = newAnswersArray[i]
+      newAnswersArray[i] = tempAnswer
     }
 
-    setNumberArray((numberArray) => numberArray.sort(() => Math.random() - 0.5))
-    setQuestion(getUnansweredQuestion())
+    // console.log(question.numberArray)
+    // console.log(answers)
+    // console.log(newAnswersArray)
+
+    return [ ...newAnswersArray ]
   }
 
-  useEffect(changeQuestion, [])
-
-  const showFeedBack = () => {
-    setDisplayFeedback(true)
-    setTimeout(() => {
-      setDisplayFeedback(false)
-    }, 1000)
-    setTimeout(changeQuestion, 1000)
-  }
-
-  const handleAnswer = (trueness, timeout) => {
+  const handleAnswer = (trueness: boolean, timeout: boolean) => {
     if (trueness) {
+      setCorrectCount((correctCount) => correctCount + 1);
+      setPoints((points) => points + (2 * currentTime));
       setAnswerStatus(CORRECT)
-      const baseScore = 20
-      setYourScore((yourScore)=>yourScore+baseScore+currentTime)
     } else {
       setAnswerStatus(INCORRECT)
     }
     if (timeout) {
       setAnswerStatus(TIMEOUT)
+      setDisplayFeedback(true)
+      setTimeout(() => {
+        setDisplayFeedback(false)
+      }, 1000)
+      // setTimeout(changeQuestion, 1000)
+      return;
     }
-    showFeedBack()
+
+    setDisplayFeedback(true)
+
+    setIsAnswerGiven(true);
+    socket.emit("answerGiven");
+  }
+
+  // @ts-ignore
+  useEffect(async () => {
+    // @ts-ignore
+    AsyncStorage.getItem('username').then((data) => {
+      console.log("dataaaa: ", data)
+      // @ts-ignore
+      setUser(data)
+    })
+
+    setCorrectCount(0);
+    setPoints(0);
+
+    // @ts-ignore
+    setQuestion((prevQuestion) => ({
+      answers: shuffle(
+          [
+            { answer: `questions[prevQuestion.questionIndex + 1].correctAnswer`, isTrue: true},
+            { answer: questions[prevQuestion.questionIndex + 1].distractor1, isTrue: false },
+            { answer: questions[prevQuestion.questionIndex + 1].distractor2, isTrue: false },
+            { answer: questions[prevQuestion.questionIndex + 1].distractor3, isTrue: false },
+          ]),
+
+      questionIndex: prevQuestion.questionIndex + 1,
+      question: questions[prevQuestion.questionIndex + 1].questionText,
+    }))
+
+  }, []);
+
+  const test = () => {
+    // @ts-ignore
+    setQuestion((prevQuestion) => ({
+      answers: shuffle(
+          [
+            { answer: questions[prevQuestion.questionIndex + 1].correctAnswer, isTrue: true},
+            { answer: questions[prevQuestion.questionIndex + 1].distractor1, isTrue: false },
+            { answer: questions[prevQuestion.questionIndex + 1].distractor2, isTrue: false },
+            { answer: questions[prevQuestion.questionIndex + 1].distractor3, isTrue: false },
+          ]),
+
+      questionIndex: prevQuestion.questionIndex + 1,
+      question: questions[prevQuestion.questionIndex + 1].questionText,
+    }))
+
+    console.log("given: ", socket.id)
+
+    // * cleanup and iteration before next round
+    // setTimeout(() => {
+    setDisplayFeedback(false)
+    // }, 750);
+
+    setIsAnswerGiven(false)
+
     setTime(duration)
-    setCurrentRound((currentRound) => currentRound + 1)
+    setCurrentRound((currentRound: number) => currentRound + 1)
+    // console.log('NEXXXT', currentRound)
+  }
+  // * [HOOKS]
+  useEffect(() => {
+    socket.on("bothGiven", test)
+
+    return(() => {socket.close()})
+  },[]);
+
+  useEffect(() => {
+    if (currentTime == 0 && isGameGoingOn && !isAnswerGiven) {
+
+      setAnswerStatus(TIMEOUT)
+      setDisplayFeedback(true)
+
+      socket.emit("answerGiven")
+    }
+  }, [currentTime, isGameGoingOn])
+
+  if (currentRound >= totalRound + 1 && isGameGoingOn) {
+
+    // console.log("correct count: ", correctCount)
+    setIsGameGoingOn(false)
+    //TODO add functionality
+    socket.emit('endGameStats', {
+      correct: correctCount,
+      questionCount: totalRound,
+      points: points,
+      socketNo: socket.id,
+      userN: user
+    })
+
+    socket.on("winner", (obj) => {
+      let stats = obj.stats;
+
+      stats.forEach((stat, index) => {
+        if(stat.socketNo == socket.id){
+          navigation.navigate("ONEOONE_STATS", {
+            correct: correctCount,
+            questionCount: totalRound,
+            place: stats.length - index,
+            lp: 12,
+            rank: "GOLD",
+            points: points,
+          })
+        }
+      })
+    })
+
   }
 
   if (currentTime == 0 && gameStatus) {
-    handleAnswer(false, true)
-  }
 
-  if (currentRound == totalRound + 1 && gameStatus) {
-    setGameStatus(false)
-    //TODO add functionality
-    navigation.navigate('ONEOONE_STATS', {
-      correct: 3,
-      questionCount: totalRound,
-      place: 2,
-      lp: 12,
-      rank: 'GOLD',
-      points: yourScore
-    })
   }
 
   return (
@@ -155,7 +263,7 @@ const OneOOneGameScreen = ({ navigation, route }) => {
         currentTime={currentTime}
         setTime={setTime}
         duration={duration}
-        gameStatus={gameStatus}
+        gameStatus={isGameGoingOn}
       />
       <Text style={styles.roundCount}>
         {currentRound}/{totalRound}
@@ -169,7 +277,7 @@ const OneOOneGameScreen = ({ navigation, route }) => {
             />
             <Text style={styles.name}>{"YOU"}</Text>
           </View>
-          <Text style={styles.score}>{yourScore}</Text>
+          <Text style={styles.score}>{points}</Text>
         </View>
         <View style={styles.profile}>
           <Text style={styles.score}>{enemyScore}</Text>
@@ -185,7 +293,7 @@ const OneOOneGameScreen = ({ navigation, route }) => {
       <OneOOneQuizPanel
         question={question}
         handleAnswer={handleAnswer}
-        numberArray={numberArray}
+        numberArray={question.numberArray}
       />
     </View>
   )

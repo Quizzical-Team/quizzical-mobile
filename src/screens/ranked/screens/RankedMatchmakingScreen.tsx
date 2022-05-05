@@ -18,7 +18,7 @@ const RankedMatchmakingScreen = ({navigation}) => {
   
   useEffect(()=>{
 
-    connect();
+    // connect();
 
     // socket.emit("addToQueue");
 

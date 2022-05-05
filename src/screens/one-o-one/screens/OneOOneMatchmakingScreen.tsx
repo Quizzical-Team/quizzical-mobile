@@ -20,10 +20,10 @@ const OneOOneMatchmakingScreen = ({navigation}) => {
   }
   
   useEffect(()=>{
-    socket.on('gameFound', (res) => {
-      console.log("found the gaaame ", res);
-      navigation.navigate("ONEOONE_LOADING")
-    })
+    // socket.on('gameFound', (res) => {
+    //   console.log("found the gaaame ", res);
+    //   navigation.navigate("ONEOONE_LOADING")
+    // })
   } ,[])
   
   

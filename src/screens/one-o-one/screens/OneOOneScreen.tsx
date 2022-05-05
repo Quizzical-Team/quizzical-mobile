@@ -7,7 +7,7 @@ import OneOOneMatchmakingScreen from './OneOOneMatchmakingScreen'
 import OneOOneLoadingScreen from './OneOOneLoadingScreen'
 import OneOOneGameScreen from './OneOOneGameScreen'
 import OneOOneStatsScreen from './OneOOneStatsScreen'
-import { socket } from '../../../server/socket'
+import {connect, socket} from '../../../server/socket'
 
 const Stack = createNativeStackNavigator()
 
@@ -24,7 +24,9 @@ const OneOOneScreen = ({ navigation }) => {
     }
 
     const handleMatchMaking = () => {
-        socket.emit("addToQueue")
+
+        connect();
+        // socket.emit("addToQueue")
         navigation.navigate("ONEOONE_MATCHMAKING")
 
     }

@@ -1,18 +1,38 @@
 import { getRandomString } from 'native-base/lib/typescript/theme/tools'
-import React, { useState } from 'react'
+import React, {useEffect, useState} from 'react'
 import { View, Text, StyleSheet, Image } from 'react-native'
 import { loggedInUser, enemies } from '../../../data/authentication'
+import {socket} from "../../../server/socket";
 
 const OneOOneLoadingScreen = ({ navigation }) => {
   //TODO ENEMIES
 
-  const startGame = () => {
-    navigation.navigate('ONEOONE_GAME', {
-      restart: true
-    })
-  }
+  // const startGame = () => {
+  //   navigation.navigate('ONEOONE_GAME', {
+  //     restart: true
+  //   })
+  // }
+  //
+  // setTimeout(startGame,2000)
 
-  setTimeout(startGame,2000)
+  useEffect(() => {
+    socket.emit("addToQueue");
+
+    socket.on('gameFound', (res) => {
+      console.log("found the one o one game: ", res);
+
+      // socket.emit("getQ");
+    })
+
+    socket.on("takeTheQ", (data) => {
+      // console.log(data);
+
+      navigation.navigate('ONEOONE_GAME', {
+        restart: true,
+        questions: data
+      })
+    })
+  }, [])
 
   return (
     <View style={styles.frame}>

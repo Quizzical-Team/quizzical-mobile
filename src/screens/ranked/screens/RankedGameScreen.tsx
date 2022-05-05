@@ -68,7 +68,7 @@ const RankedGameScreen = ({navigation, route}) => {
   const [currentRound, setCurrentRound] = useState(1)
   const [isAnswerGiven, setIsAnswerGiven] = useState(false)
   // const [questionIndex, setQuestionIndex] = useState(0)
-  const [user, setUser] = useState("anan");
+  const [user, setUser] = useState("null");
   const questions = route.params.questions;
   const [question, setQuestion] = useState({
     numberArray: [0,1,2,3],

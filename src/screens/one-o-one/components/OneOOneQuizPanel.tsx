@@ -26,31 +26,31 @@ const OneOOneQuizPanel = ({question, handleAnswer, numberArray}) => {
   }
 
   const AnswerPanel = ({ answers }) => {
-   
+
 
     return (
-      <View style={styles.answerPanel}>
-        <View style={styles.answerRow}>
-          <AnswerButton
-            answer={answers[numberArray[0]]}
-            trueness={numberArray[0] == 0}
-          />
-          <AnswerButton
-            answer={answers[numberArray[1]]}
-            trueness={numberArray[1] == 0}
-          />
+        <View style={styles.answerPanel}>
+          <View style={styles.answerRow}>
+            <AnswerButton
+                answer={answers[0].answer}
+                trueness={answers[0].isTrue}
+            />
+            <AnswerButton
+                answer={answers[1].answer}
+                trueness={answers[1].isTrue}
+            />
+          </View>
+          <View style={styles.answerRow}>
+            <AnswerButton
+                answer={answers[2].answer}
+                trueness={answers[2].isTrue}
+            />
+            <AnswerButton
+                answer={answers[3].answer}
+                trueness={answers[3].isTrue}
+            />
+          </View>
         </View>
-        <View style={styles.answerRow}>
-          <AnswerButton
-            answer={answers[numberArray[2]]}
-            trueness={numberArray[2] == 0}
-          />
-          <AnswerButton
-            answer={answers[numberArray[3]]}
-            trueness={numberArray[3] == 0}
-          />
-        </View>
-      </View>
     )
   }
   return (
