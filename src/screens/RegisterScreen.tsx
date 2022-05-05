@@ -25,13 +25,14 @@ const RegisterScreen = ({ navigation }) => {
 
   function onSignupButtonPress() {
     if (validator.isEmail(email)) {
-      registerWithUsernameEmailPassword(username, email, password).then((response) => {
-        if (response) {
-          setWarningOpacity(0)
-          navigation.navigate('LOGIN')
-        } else
-          setWarningOpacity(1)
-      })   
+      registerWithUsernameEmailPassword(email, username, password).then(
+        (response) => {
+          if (response) {
+            setWarningOpacity(0)
+            navigation.navigate('LOGIN')
+          } else setWarningOpacity(1)
+        }
+      )
     } else {
       setWarningOpacity(1)
     }
@@ -65,24 +66,28 @@ const RegisterScreen = ({ navigation }) => {
         keyboardType="email-address"
         autoCapitalize="none"
         onChangeText={onEmailChange}
-        />
+      />
       <TextInput
         style={styles.inputs}
         placeholder="Username"
         keyboardType="default"
         autoCapitalize="none"
         onChangeText={onUsernameChange}
-        />
+      />
       <TextInput
         style={styles.inputs}
         secureTextEntry={true}
         placeholder="Password"
         onChangeText={onPasswordChange}
-        />
+      />
       <Text style={[styles.warning, { opacity: warningOpacity }]}>
         This user already exists
       </Text>
-      <LoginScreenButton style={styles.signUpButton} onPress={onSignupButtonPress} text="SIGN UP" />
+      <LoginScreenButton
+        style={styles.signUpButton}
+        onPress={onSignupButtonPress}
+        text="SIGN UP"
+      />
     </LinearGradient>
   )
 }

@@ -1,5 +1,5 @@
 import { AntDesign } from '@expo/vector-icons'
-import React, {useEffect, useState} from 'react'
+import React, { useEffect, useState } from 'react'
 import {
   View,
   Text,
@@ -10,60 +10,86 @@ import {
   Image
 } from 'react-native'
 import {
-    getAllFriendRequests,
-    getAllFriendsOfPlayer,
-    respondFriendRequest,
-    sendFriendRequest
-} from "../services/friendService";
+  getAllFriendRequests,
+  getAllFriendsOfPlayer,
+  respondFriendRequest,
+  sendFriendRequest
+} from '../services/friendService'
 
 const FriendsScreen = () => {
+  const [requests, setRequests] = useState([])
+  const [friends, setFriends] = useState([])
+  const [searchFriend, setSearchFriend] = useState('')
 
-    const [requests, setRequests] = useState([])
-    const [friends, setFriends] = useState([])
-    const [searchFriend, setSearchFriend] = useState('')
+  function updateRequestsAndFriends() {
+    getAllFriendsOfPlayer().then((_friends) => setFriends(_friends))
+    getAllFriendRequests().then((_requests) =>
+      setRequests(_requests.map((_req) => _req.sender))
+    )
+  }
 
-    function updateRequestsAndFriends() {
-        getAllFriendsOfPlayer().then((_friends) => setFriends(_friends))
-        getAllFriendRequests().then((_requests) => setRequests(_requests.map((_req) => _req.sender)))
-    }
+  useEffect(() => {
+    updateRequestsAndFriends()
+  }, [])
 
-    useEffect(() => {
-        updateRequestsAndFriends()
-    }, [])
+  const reset = () => {
+    updateRequestsAndFriends()
+    setTimeout(reset, 1000)
+  }
+  useEffect(()=>{
+    reset()
+  },[])
 
-    const addFriend = async (username: string) => {
-        await sendFriendRequest(username)
-        // console.log(username) //TODO
-    }
+  const addFriend = async (username: string) => {
+    
+    await sendFriendRequest(username)
+  }
 
-    const acceptRequest = async (username: string) => {
-        await respondFriendRequest(username, true)
-        updateRequestsAndFriends()
-        // console.log(username) //TODO
-    }
-    const declineRequest = async (username: string) => {
-        await respondFriendRequest(username, false)
-        updateRequestsAndFriends()
-        console.log(username) //TODO
-    }
+  const removeFriend = async (username: string) => {
+    
+    //await sendFriendRequest(username)
+  }
+
+  const acceptRequest = async (username: string) => {
+    await respondFriendRequest(username, true)
+    updateRequestsAndFriends()
+    // console.log(username) //TODO
+  }
+  const declineRequest = async (username: string) => {
+    await respondFriendRequest(username, false)
+    updateRequestsAndFriends()
+    console.log(username) //TODO
+  }
 
   const RequestUserRow = ({ username, avatar }) => {
     return (
       <View style={styles.userRow}>
         <Text>{username}</Text>
-        <View style={{flexDirection: "row"}}>
-        <Pressable style={[styles.requestButton,{backgroundColor: "green"}]} onPress={()=>{
-            acceptRequest(username)
-        }}>
-            <AntDesign name="pluscircleo" size={30} color="black" />
-        </Pressable>
-        <Pressable style={[styles.requestButton,{backgroundColor: "red"}]} onPress={()=>{
-            declineRequest(username)
-        }}>
-            <AntDesign name="closecircleo" size={30} color="black" />
-        </Pressable>
+        <View style={{ flexDirection: 'row' }}>
+          <View style={styles.requestButtonOutter}>
+            <Pressable
+              android_ripple={{ color: '#ccc' }}
+              style={[styles.requestButton, { backgroundColor: 'green' }]}
+              onPress={() => {
+                acceptRequest(username)
+              }}
+            >
+              <AntDesign name="pluscircleo" size={30} color="black" />
+            </Pressable>
+          </View>
+
+          <View style={styles.requestButtonOutter}>
+            <Pressable
+              android_ripple={{ color: '#ccc' }}
+              style={[styles.requestButton, { backgroundColor: 'red' }]}
+              onPress={() => {
+                declineRequest(username)
+              }}
+            >
+              <AntDesign name="closecircleo" size={30} color="black" />
+            </Pressable>
+          </View>
         </View>
-        
       </View>
     )
   }
@@ -72,6 +98,17 @@ const FriendsScreen = () => {
     return (
       <View style={styles.userRow}>
         <Text>{username}</Text>
+        <View style={styles.requestButtonOutter}>
+            <Pressable
+              android_ripple={{ color: '#ccc' }}
+              style={[styles.requestButton, { backgroundColor: 'red' }]}
+              onPress={() => {
+                removeFriend(username)
+              }}
+            >
+              <AntDesign name="deleteuser" size={25} color="black" />
+            </Pressable>
+          </View>
       </View>
     )
   }
@@ -84,18 +121,35 @@ const FriendsScreen = () => {
           placeholder="Add Friend"
           autoCapitalize="none"
           onChangeText={setSearchFriend}
+          value={searchFriend}
         />
-        <Pressable style={styles.button} onPress={ async ()=>{
-            await addFriend(searchFriend)
-        }}>
-          <AntDesign name="adduser" size={30} color="black" />
-        </Pressable>
+        <View style={styles.buttonOutter}>
+          <Pressable
+            android_ripple={{ color: '#ccc' }}
+            style={styles.button}
+            onPress={async () => {
+              setSearchFriend("")
+              await addFriend(searchFriend)
+            }}
+          >
+            <AntDesign name="adduser" size={30} color="black" />
+          </Pressable>
+        </View>
       </View>
       <View style={styles.friendsPanel}>
         <View style={styles.requestsPanel}>
           <Text style={styles.title}>Friend Requests</Text>
-          <ScrollView style={{width: "90%"}} showsVerticalScrollIndicator={false}>
-            {requests.map((player) => {
+          <ScrollView
+            style={{ width: '90%' }}
+            showsVerticalScrollIndicator={false}
+          >
+            {requests.sort((a, b) => {
+            if (a.username < b.username) {
+              return 1
+            } else {
+              return -1
+            }
+          }).map((player) => {
               return (
                 <RequestUserRow
                   key={player.username}
@@ -108,8 +162,17 @@ const FriendsScreen = () => {
         </View>
         <View style={styles.listPanel}>
           <Text style={styles.title}>Friends</Text>
-          <ScrollView style={{width: "90%"}} showsVerticalScrollIndicator={false}>
-            {friends.map((player) => {
+          <ScrollView
+            style={{ width: '90%' }}
+            showsVerticalScrollIndicator={false}
+          >
+            {friends.sort((a, b) => {
+            if (a.username < b.username) {
+              return 1
+            } else {
+              return -1
+            }
+          }).map((player) => {
               return (
                 <UserRow
                   key={player.username}
@@ -148,6 +211,15 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center'
   },
+  buttonOutter: {
+    height: 60,
+    width: 60,
+    backgroundColor: '#0fffc8',
+    borderRadius: 100,
+    justifyContent: 'center',
+    alignItems: 'center',
+    overflow: 'hidden'
+  },
   inputs: {
     width: '85%',
     height: 60,
@@ -174,12 +246,19 @@ const styles = StyleSheet.create({
     borderWidth: 2,
     borderColor: 'rgba(0,0,0,0.3)'
   },
-  requestButton:{
-      height: 30,
-      width: 30,
-      backgroundColor: "white",
-      borderRadius: 20,
-      marginRight: 10,
+  requestButton: {
+    height: 30,
+    width: 30,
+    backgroundColor: 'white',
+    borderRadius: 20,
+    marginRight: 10
+  },
+  requestButtonOutter: {
+    height: 30,
+    width: 30,
+    borderRadius: 20,
+    marginRight: 10,
+    overflow: 'hidden'
   },
   listPanel: {
     height: '60%',
@@ -193,7 +272,7 @@ const styles = StyleSheet.create({
   userRow: {
     flex: 1,
     flexDirection: 'row',
-    justifyContent: "space-between",
+    justifyContent: 'space-between',
     alignContent: 'center',
     alignItems: 'center',
     textAlign: 'center',
@@ -207,9 +286,9 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: 'white',
     borderRadius: 100,
-    marginLeft: "5%",
-    marginRight: "5%",
-  },
+    marginLeft: '5%',
+    marginRight: '5%'
+  }
 })
 
 export default FriendsScreen
