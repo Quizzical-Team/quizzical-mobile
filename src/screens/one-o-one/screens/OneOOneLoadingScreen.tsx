@@ -1,6 +1,6 @@
 import { getRandomString } from 'native-base/lib/typescript/theme/tools'
 import React, {useEffect, useState} from 'react'
-import { View, Text, StyleSheet, Image } from 'react-native'
+import {View, Text, StyleSheet, Image, Button} from 'react-native'
 import { loggedInUser, enemies } from '../../../data/authentication'
 import {socket} from "../../../server/socket";
 
@@ -16,7 +16,7 @@ const OneOOneLoadingScreen = ({ navigation }) => {
   // setTimeout(startGame,2000)
 
   useEffect(() => {
-    socket.emit("addToQueue");
+    socket.emit("addToQueue", "oneOnOne");
 
     socket.on('gameFound', (res) => {
       console.log("found the one o one game: ", res);
@@ -34,6 +34,12 @@ const OneOOneLoadingScreen = ({ navigation }) => {
     })
   }, [])
 
+  function leave(){
+    socket.close();
+
+    navigation.navigate('MAINMENU')
+  }
+
   return (
     <View style={styles.frame}>
       <Text style={styles.title}>One-o-One</Text>
@@ -42,6 +48,7 @@ const OneOOneLoadingScreen = ({ navigation }) => {
       <Text style={[styles.text]}>VS</Text>
       <Text style={[styles.text, { color: 'red' }]}>{"ENEMY NAME"}</Text>
       <Image source={{ uri: loggedInUser.picture }} style={styles.enemyProfile} />
+      <Button title={"leave"} onPress={leave}></Button>
     </View>
   )
 }

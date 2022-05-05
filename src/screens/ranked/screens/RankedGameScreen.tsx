@@ -128,7 +128,7 @@ const RankedGameScreen = ({navigation, route}) => {
   useEffect(async () => {
     // @ts-ignore
     AsyncStorage.getItem('username').then((data) => {
-      console.log("dataaaa: ", data)
+      console.log("username: ", data)
       // @ts-ignore
       setUser(data)
     })
@@ -184,7 +184,9 @@ const RankedGameScreen = ({navigation, route}) => {
   useEffect(() => {
     socket.on("bothGiven", test)
 
-    return(() => {socket.close()})
+
+
+    // return(() => {socket.close()})
   },[]);
 
   useEffect(() => {
