@@ -37,7 +37,7 @@ const LoginScreen = ({ navigation }) => {
     logInWithUsernamePassword(username, password)
       .then((response) => {
       if (response) {
-        connect()
+        // connect()
         navigation.navigate('MAINMENU');
         setWarningOpacity(0)
       } else {

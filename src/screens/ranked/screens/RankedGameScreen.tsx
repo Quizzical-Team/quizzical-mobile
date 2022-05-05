@@ -238,6 +238,7 @@ const RankedGameScreen = ({navigation, route}) => {
   // // yoksa array out of bounds yeriz render sirasinda
   // // cunku sonraki soruyu da getlemeye calisiyor
   // // sonraki sayfaya gecmeden hemen once
+  // buraya doğal olarak giriş yapmıyor
   if (currentRound >= totalRound + 1) {
     return (<View style={styles.frame}/>);
   }
