@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useEffect, useState} from 'react'
 import {
   View,
   Text,
@@ -8,7 +8,23 @@ import {
   ScrollView
 } from 'react-native'
 import { LinearGradient } from 'expo-linear-gradient'
+import {getTop10PlayersForLeaderboard} from "../services/userService";
+import {parse} from "react-native-svg/lib/typescript";
 const LeadershipBoard = () => {
+  const [ leaders, setLeaders ] = useState([])
+
+  useEffect(() => {
+    getTop10PlayersForLeaderboard().then((response) => {
+      setLeaders(response)
+    })
+    setTimeout(() => {
+      // call user service and update leaders
+      getTop10PlayersForLeaderboard().then((response) => {
+        setLeaders(response)
+      })
+    }, 10000)
+  }, [])
+
   const UserRow = ({ username, avatar, score }) => {
     return (
       <View style={styles.userRow}>
@@ -19,73 +35,39 @@ const LeadershipBoard = () => {
     )
   }
 
-
-
-  const players = [
-    {
-      username: 'username',
-      avatar: 'https://cdn.discordapp.com/embed/avatars/5.png',
-      score: 18
-    },
-    {
-      username: 'username1',
-      avatar: 'https://cdn.discordapp.com/embed/avatars/5.png',
-      score: 128
-    },
-    {
-      username: 'username2',
-      avatar: 'https://cdn.discordapp.com/embed/avatars/5.png',
-      score: 418
-    },
-    {
-      username: 'username3',
-      avatar: 'https://cdn.discordapp.com/embed/avatars/5.png',
-      score: 318
-    },
-    {
-      username: 'username4',
-      avatar: 'https://cdn.discordapp.com/embed/avatars/5.png',
-      score: 18
-    },
-    {
-      username: 'username5',
-      avatar: 'https://cdn.discordapp.com/embed/avatars/5.png',
-      score: 148
-    },
-    {
-      username: 'username6',
-      avatar: 'https://cdn.discordapp.com/embed/avatars/5.png',
-      score: 185
-    },
-    {
-      username: 'username7',
-      avatar: 'https://cdn.discordapp.com/embed/avatars/5.png',
-      score: 118
-    }
-  ]
-
   return (
     <LinearGradient colors={['#edd9ff','#edd9ff']} style={styles.frame}>
       <Text style={styles.title}>Leader Board</Text>
       <ScrollView style={styles.list} showsVerticalScrollIndicator={false}>
-        {players
-          .sort((a, b) => {
-            if (a.score < b.score) {
-              return 1
-            } else {
-              return -1
-            }
-          })
-          .map((player) => {
-            return (
+        {
+          leaders.map((player) => {
+          return (
               <UserRow
-                key={player.username}
+                key={player.id}
                 username={player.username}
-                avatar={player.avatar}
-                score={player.score}
-              />
-            )
-          })}
+                avatar={`https://cdn.discordapp.com/embed/avatars/${parseInt(player.id)%6}.png`}
+                score={player.matchmakingRatio}
+                />
+          )
+        })
+          // .sort((a, b) => {
+          //   if (a.matchmakingRatio < b.score) {
+          //     return 1
+          //   } else {
+          //     return -1
+          //   }
+          // })
+          // .map((player) => {
+          //   return (
+          //     <UserRow
+          //       key={player.username}
+          //       username={player.username}
+          //       avatar={player.avatar}
+          //       score={player.score}
+          //     />
+          //   )
+          // })
+        }
       </ScrollView>
     </LinearGradient>
   )

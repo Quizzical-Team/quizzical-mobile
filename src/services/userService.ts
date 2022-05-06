@@ -1,9 +1,9 @@
-import { API, USER_SERVICE_API_KEY } from '.'
+import {API, USER_SERVICE_API_KEY} from '.'
 
-// import AsyncStorage from '@react-native-community/async-storage';  
+// import AsyncStorage from '@react-native-community/async-storage';
 // ! ignore deprecation this causes an error from expo
 // fuck it
-import { AsyncStorage } from 'react-native'
+import {AsyncStorage} from 'react-native'
 
 export async function logInWithUsernamePassword (username: String, password: String) {
   console.log('login request');
@@ -119,5 +119,18 @@ export const validateTokenFromStorage = async () => {
   
   AsyncStorage.removeItem('token')
   return false
+}
+
+export const getTop10PlayersForLeaderboard = async () => {
+    const res = await fetch(
+        API + '/api/v1/players/leaderboard', {
+            method: 'GET',
+            headers: {
+                'x-api-key': USER_SERVICE_API_KEY
+            }
+        }
+    )
+
+    return await res.json()
 }
 
