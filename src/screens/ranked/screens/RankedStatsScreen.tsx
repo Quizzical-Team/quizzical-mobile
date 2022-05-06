@@ -1,15 +1,20 @@
 import { AntDesign } from '@expo/vector-icons'
 import { LinearGradient } from 'expo-linear-gradient'
-import React from 'react'
+import React, {useEffect} from 'react'
 import { View, StyleSheet, Pressable, Text } from 'react-native'
 import {socket} from "../../../server/socket"
 
 const RankedStatsScreen = ({ navigation, route }) => {
   const { correct, questionCount, place, lp, rank, points } = route.params
   let handleMenu = false;
+  //
+  // useEffect(() => {
+  //   socket.emit('getPlayersInRoom');
+  // })
 
   const handleMainMenu = () => {
-    socket.emit("endGame");
+    // socket.emit("endGame");
+    socket.close();
     navigation.navigate('RANKED_START', { goHome: true })
   }
 

@@ -1,6 +1,6 @@
 import { getRandomString } from 'native-base/lib/typescript/theme/tools'
 import React, {useEffect, useState} from 'react'
-import { View, Text, StyleSheet, Image } from 'react-native'
+import {View, Text, StyleSheet, Image, Button} from 'react-native'
 import { loggedInUser, enemies } from '../../../data/authentication'
 import {socket} from "../../../server/socket";
 
@@ -43,7 +43,7 @@ const RankedLoadingScreen = ({ navigation }) => {
   useEffect(() => {
     // setTimeout(addEnemy, 500)
 
-    socket.emit("addToQueue");
+    socket.emit("addToQueue", "ranked");
 
     socket.on('gameFound', (res) => {
       console.log("found the gaaame ", res);
@@ -61,6 +61,12 @@ const RankedLoadingScreen = ({ navigation }) => {
     })
   }, [])
 
+  function leave(){
+    socket.close();
+
+    navigation.navigate('MAINMENU')
+  }
+
   return (
     <View style={styles.frame}>
       <Text style={styles.title}>RANKED</Text>
@@ -69,6 +75,7 @@ const RankedLoadingScreen = ({ navigation }) => {
       <Text style={[styles.text]}>VS</Text>
       <Text style={[styles.text, { color: 'red' }]}>ENEMIES</Text>
       <View style={styles.enemies}>{enemyComponents}</View>
+      <Button title={"leave"} onPress={leave}></Button>
     </View>
   )
 }

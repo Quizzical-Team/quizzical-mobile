@@ -144,7 +144,8 @@ const OneOOneGameScreen = ({ navigation, route }) => {
     setDisplayFeedback(true)
 
     setIsAnswerGiven(true);
-    socket.emit("answerGiven");
+    socket.emit("answerGivenOneOnOne");
+    socket.emit("sendScoreToEnemy", points);
   }
 
   // @ts-ignore
@@ -190,7 +191,7 @@ const OneOOneGameScreen = ({ navigation, route }) => {
       question: questions[prevQuestion.questionIndex + 1].questionText,
     }))
 
-    console.log("given: ", socket.id)
+    // console.log("given: ", socket.id)
 
     // * cleanup and iteration before next round
     // setTimeout(() => {
@@ -203,9 +204,18 @@ const OneOOneGameScreen = ({ navigation, route }) => {
     setCurrentRound((currentRound: number) => currentRound + 1)
     // console.log('NEXXXT', currentRound)
   }
+
+  useEffect(() => {
+    socket.on("getEnemyScore",(pnts) => {
+      console.log(`socket: ${socket.id}`, "points of the enemy: ", pnts)
+
+      setEnemyScore(pnts)
+    })
+  })
+
   // * [HOOKS]
   useEffect(() => {
-    socket.on("bothGiven", test)
+    socket.on("bothGiven", test);
 
     return(() => {socket.close()})
   },[]);
@@ -216,7 +226,7 @@ const OneOOneGameScreen = ({ navigation, route }) => {
       setAnswerStatus(TIMEOUT)
       setDisplayFeedback(true)
 
-      socket.emit("answerGiven")
+      socket.emit("answerGivenOneOnOne")
     }
   }, [currentTime, isGameGoingOn])
 
@@ -225,7 +235,7 @@ const OneOOneGameScreen = ({ navigation, route }) => {
     // console.log("correct count: ", correctCount)
     setIsGameGoingOn(false)
     //TODO add functionality
-    socket.emit('endGameStats', {
+    socket.emit('endGameStatsOneOnOne', {
       correct: correctCount,
       questionCount: totalRound,
       points: points,
