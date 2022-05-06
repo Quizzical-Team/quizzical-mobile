@@ -16,7 +16,7 @@ const OneOOneLoadingScreen = ({ navigation }) => {
   // setTimeout(startGame,2000)
 
   useEffect(() => {
-    socket.emit("addToQueue", "oneOnOne");
+    socket.emit("addToOneOnOneQueue", "oneOnOne");
 
     socket.on('gameFound', (res) => {
       console.log("found the one o one game: ", res);

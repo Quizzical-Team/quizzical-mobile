@@ -45,9 +45,10 @@ export async function logInWithUsernamePassword (username: String, password: Str
 
 // can only fetch the logged in user
 export async function getUserWithUsername(username: String) : Promise<Object> {
-  console.log('get user request');
+  console.log('get user request ', username);
   
   const token = await AsyncStorage.getItem('token')
+    console.log("token: ", token)
 
   if (token === null)
     return {}
@@ -62,9 +63,11 @@ export async function getUserWithUsername(username: String) : Promise<Object> {
     }
   )
 
+    console.log("response: ", response)
+
   if (response.ok) {
     const json = await response.json()
-    // console.log(json);
+    console.log("json: ", json);
     return json
   }
 

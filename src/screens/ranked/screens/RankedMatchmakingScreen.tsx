@@ -1,8 +1,9 @@
 import { AntDesign } from '@expo/vector-icons'
 import React, { useEffect, useState } from 'react'
-import { View, Text, StyleSheet } from 'react-native'
+import {View, Text, StyleSheet, AsyncStorage} from 'react-native'
 import * as Progress from 'react-native-progress'
 import { socket, connect } from '../../../server/socket'
+import {getUserWithUsername} from "../../../services/userService";
 
 const RankedMatchmakingScreen = ({navigation}) => {
 
@@ -13,7 +14,7 @@ const RankedMatchmakingScreen = ({navigation}) => {
   }
 
   if(progress>=1){
-      navigation.navigate("RANKED_LOADING")
+      // navigation.navigate("RANKED_LOADING")
   }
   
   useEffect(()=>{
@@ -26,6 +27,27 @@ const RankedMatchmakingScreen = ({navigation}) => {
     //   console.log("found the gaaame ", res);
     //   navigation.navigate("RANKED_LOADING")
     // })
+
+    socket.on("serverToClient", async() => {
+      AsyncStorage.getItem('username').then((data) => {
+        // console.log("username: ", data)
+        return data;
+      }).then(async (userName)=>{
+        return await getUserWithUsername(userName);
+      }).then((user) => {
+        // console.log(user)
+
+        if(user === undefined){
+          return false;
+        }else{
+          socket.emit("clientToServer", user);
+          return true;
+        }
+      }).then((gotTheUser) => {
+        navigation.navigate("RANKED_LOADING")
+      })
+    })
+
   } ,[])
   
   

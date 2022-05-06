@@ -144,7 +144,7 @@ const OneOOneGameScreen = ({ navigation, route }) => {
     setDisplayFeedback(true)
 
     setIsAnswerGiven(true);
-    socket.emit("answerGiven");
+    socket.emit("answerGivenOneOnOne");
     socket.emit("sendScoreToEnemy", points);
   }
 
@@ -226,7 +226,7 @@ const OneOOneGameScreen = ({ navigation, route }) => {
       setAnswerStatus(TIMEOUT)
       setDisplayFeedback(true)
 
-      socket.emit("answerGiven")
+      socket.emit("answerGivenOneOnOne")
     }
   }, [currentTime, isGameGoingOn])
 
@@ -235,7 +235,7 @@ const OneOOneGameScreen = ({ navigation, route }) => {
     // console.log("correct count: ", correctCount)
     setIsGameGoingOn(false)
     //TODO add functionality
-    socket.emit('endGameStats', {
+    socket.emit('endGameStatsOneOnOne', {
       correct: correctCount,
       questionCount: totalRound,
       points: points,
