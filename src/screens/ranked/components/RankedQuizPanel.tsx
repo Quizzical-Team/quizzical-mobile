@@ -97,7 +97,8 @@ const styles = StyleSheet.create({
     color: 'white',
     alignItems: 'center',
     fontSize: 40,
-    fontWeight: 'bold'
+    fontWeight: 'bold',
+    textAlign: "center",
   },
   answerPanel: {
     flex: 2,

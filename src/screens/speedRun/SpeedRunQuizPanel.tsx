@@ -172,7 +172,9 @@ const styles = StyleSheet.create({
     color: 'white',
     alignItems: 'center',
     fontSize: 40,
-    fontWeight: 'bold'
+    fontWeight: 'bold',
+    textAlign: "center",
+    margin: 10,
   },
   answerPanel: {
     flex: 2,

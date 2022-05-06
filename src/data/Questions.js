@@ -1,7 +1,7 @@
 import Question from "./dataTemplate/Question";
 
 export const questions = [
-    new Question(1, "Example Question?1", ["correct answer", "incorrect answer 1", "incorrect answer 2", "incorrect answer 3" ]),
+    new Question(1, "What are by far the most common type of invertebrate?", ["insects", "corals", "spiders", "crustaceans" ]),
     new Question(2, "Example Question?2", ["correct answer", "incorrect answer 1", "incorrect answer 2", "incorrect answer 3" ]),
     new Question(3, "Example Question?3", ["correct answer", "incorrect answer 1", "incorrect answer 2", "incorrect answer 3" ]),
     new Question(4, "Example Question?4", ["correct answer", "incorrect answer 1", "incorrect answer 2", "incorrect answer 3" ]),
