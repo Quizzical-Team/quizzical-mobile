@@ -140,7 +140,7 @@ const RankedGameScreen = ({navigation, route}) => {
     setQuestion((prevQuestion) => ({
       answers: shuffle(
           [
-            { answer: `questions[prevQuestion.questionIndex + 1].correctAnswer`, isTrue: true},
+            { answer: questions[prevQuestion.questionIndex + 1].correctAnswer, isTrue: true},
             { answer: questions[prevQuestion.questionIndex + 1].distractor1, isTrue: false },
             { answer: questions[prevQuestion.questionIndex + 1].distractor2, isTrue: false },
             { answer: questions[prevQuestion.questionIndex + 1].distractor3, isTrue: false },
