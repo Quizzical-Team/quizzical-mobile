@@ -56,7 +56,7 @@ const FeedBackFrame = ({ trueness, display }) => {
 
 const RankedGameScreen = ({navigation, route}) => {
   const totalRound = 4
-  const duration = 5
+  const duration = 15
   const [correctCount, setCorrectCount] = useState(0)
   const [points, setPoints] = useState(0)
 

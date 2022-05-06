@@ -8,7 +8,7 @@ const RankedQuizPanel = ({question, handleAnswer, numberArray}) => {
   const AnswerButton = ({ answer, trueness }) => {
     return (
       <LinearGradient
-        colors={['#656CEE', '#ACB0FF']}
+        colors={['#3D44C7', '#6B70DB']}
         style={styles.answerButtonOuter}
       >
         <Pressable
@@ -99,6 +99,7 @@ const styles = StyleSheet.create({
     fontSize: 40,
     fontWeight: 'bold',
     textAlign: "center",
+    margin: 10,
   },
   answerPanel: {
     flex: 2,

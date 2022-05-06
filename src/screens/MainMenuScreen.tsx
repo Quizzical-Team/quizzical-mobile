@@ -47,7 +47,7 @@ const Friends = ({ navigation }) => {
   )
 }
 
-const Contribute = ({ navigation }) => {
+/* const Contribute = ({ navigation }) => {
   return (
     <View style={styles.mainFrame}>
       <View style={styles.headerPanel}>
@@ -56,7 +56,7 @@ const Contribute = ({ navigation }) => {
     </View>
   )
 }
-
+ */
 const Logout = ({ navigation }) => {
   return (
     <View style={styles.mainFrame}>
@@ -116,7 +116,6 @@ const MainMenuScreen = ({ navigation }) => {
         <Drawer.Screen name="Home" component={HomeMenu} />
         <Drawer.Screen name="Profile" component={Profile} />
         <Drawer.Screen name="Friends" component={Friends} />
-        <Drawer.Screen name="Contribute" component={Contribute} />
       </Drawer.Navigator>
     </NavigationContainer>
   )

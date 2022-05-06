@@ -5,11 +5,11 @@ import React, { useEffect, useState } from 'react'
 import { View, Text, StyleSheet, Pressable, Image } from 'react-native'
 import { loggedInUser } from '../../../data/authentication'
 
-const OneOOneQuizPanel = ({question, handleAnswer, numberArray}) => {
+const OneOOneQuizPanel = ({ question, handleAnswer, numberArray }) => {
   const AnswerButton = ({ answer, trueness }) => {
     return (
       <LinearGradient
-        colors={['#656CEE', '#ACB0FF']}
+        colors={['#3D44C7', '#6B70DB']}
         style={styles.answerButtonOuter}
       >
         <Pressable
@@ -26,31 +26,29 @@ const OneOOneQuizPanel = ({question, handleAnswer, numberArray}) => {
   }
 
   const AnswerPanel = ({ answers }) => {
-
-
     return (
-        <View style={styles.answerPanel}>
-          <View style={styles.answerRow}>
-            <AnswerButton
-                answer={answers[0].answer}
-                trueness={answers[0].isTrue}
-            />
-            <AnswerButton
-                answer={answers[1].answer}
-                trueness={answers[1].isTrue}
-            />
-          </View>
-          <View style={styles.answerRow}>
-            <AnswerButton
-                answer={answers[2].answer}
-                trueness={answers[2].isTrue}
-            />
-            <AnswerButton
-                answer={answers[3].answer}
-                trueness={answers[3].isTrue}
-            />
-          </View>
+      <View style={styles.answerPanel}>
+        <View style={styles.answerRow}>
+          <AnswerButton
+            answer={answers[0].answer}
+            trueness={answers[0].isTrue}
+          />
+          <AnswerButton
+            answer={answers[1].answer}
+            trueness={answers[1].isTrue}
+          />
         </View>
+        <View style={styles.answerRow}>
+          <AnswerButton
+            answer={answers[2].answer}
+            trueness={answers[2].isTrue}
+          />
+          <AnswerButton
+            answer={answers[3].answer}
+            trueness={answers[3].isTrue}
+          />
+        </View>
+      </View>
     )
   }
   return (
@@ -99,7 +97,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     fontSize: 40,
     fontWeight: 'bold',
-    textAlign: "center",
+    textAlign: 'center',
+    margin: 10,
   },
   answerPanel: {
     flex: 2,
