@@ -1,10 +1,10 @@
 import { io } from "socket.io-client";
 import {useEffect} from "react";
+import { ip } from "./ipconfig";
 
 export let socket = io('');
 
 export const connect = () => {
-    let ip="192.168.0.17"; // enter the ip on which server operates
     socket = io(`http://${ip}:3000`)
 }
 
